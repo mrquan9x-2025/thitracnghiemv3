@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LỚP TOÁN THẦY QUÂN</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        
+        /* BRANDING */
+        .brand-title { text-align: center; color: #007bff; text-transform: uppercase; margin-bottom: 5px; font-size: 2em; letter-spacing: 1px; }
+        .brand-subtitle { text-align: center; color: #666; font-style: italic; font-size: 1.1em; margin-top: 0; margin-bottom: 30px; }
+
+        h2 { text-align: center; color: #333; margin-top: 30px;}
+        .section-header { background: #e9ecef; padding: 10px; margin: 20px 0 10px; font-weight: bold; border-radius: 5px; color: #495057; text-transform: uppercase; font-size: 0.9em; }
+        
+        /* UI Elements */
+        .btn { background: #007bff; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 15px; font-weight: bold; transition: 0.2s; }
+        .btn:hover { background: #0056b3; }
+        .btn-outline { background: transparent; border: 1px solid #007bff; color: #007bff; margin-top: 15px; }
+        
+        input, textarea, select { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
+        
+        /* Grid Layout Admin */
+        .config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 5px; }
+        .config-group { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 15px; }
+        .config-label { font-size: 0.9em; font-weight: bold; color: #333; margin-bottom: 5px; display: block; }
+
+        /* Exam Layout */
+        .question-box { background: #fff; padding: 20px; margin-bottom: 15px; border: 1px solid #e1e4e8; border-radius: 8px; }
+        .q-title { font-weight: bold; margin-bottom: 10px; display: block; color: #2c3e50; }
+        
+        /* --- SỬA UI MOBILE --- */
+        .options-grid { 
+            display: flex; 
+            gap: 5px; /* Giảm khoảng cách để không bị rớt dòng */
+            justify-content: space-between; /* Căn đều 2 bên */
+            margin-top: 10px; 
+            flex-wrap: nowrap; /* Không cho phép xuống dòng */
+        }
+        .option-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            cursor: pointer; 
+            flex: 1; /* Chia đều chiều rộng */
+        }
+        .option-label { font-weight: bold; margin-bottom: 8px; color: #555; }
+        input[type="radio"] { transform: scale(1.3); cursor: pointer; margin: 0; }
+
+        .matrix-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; }
+        .tf-group { display: flex; gap: 20px; }
+        .tf-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        /* -------------------- */
+
+        .warning-box { background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin: 20px 0; border: 1px solid #ffeeba; text-align: center; font-weight: bold; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none;}
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="loader" class="loader"></div>
+    
+    <div id="main-screen">
+        <h1 class="brand-title">LỚP TOÁN THẦY QUÂN</h1>
+        <p class="brand-subtitle">Chăm học Toán - Sáng tương lai</p>
+        
+        <input type="text" id="hs-name" placeholder="Họ và tên học sinh">
+        <input type="text" id="exam-code" placeholder="Nhập Mã Đề Thi (do Thầy Cô cung cấp) - Chú ý VIẾT HOA">
+        <button class="btn" onclick="vaoThi()">BẮT ĐẦU LÀM BÀI</button>
+        <button class="btn btn-outline" onclick="showLoginAdmin()" style="font-size: 0.85em; padding: 8px;">Dành cho Giáo viên</button>
+    </div>
+
+    <div id="login-admin" class="hidden">
+        <h2>Giáo viên Đăng nhập</h2>
+        <input type="password" id="admin-pass" placeholder="Mật khẩu">
+        <button class="btn" onclick="loginAdmin()">Vào quản trị</button>
+        <button class="btn btn-outline" onclick="location.reload()">Quay lại</button>
+    </div>
+
+    <div id="admin-panel" class="hidden">
+        <h2>Tạo Đề Thi Mới</h2>
+        <input type="text" id="new-exam-code" placeholder="Mã đề (VD: TEST01)">
+        <input type="text" id="new-exam-name" placeholder="Tên đề thi">
+
+        <div class="config-group">
+            <div class="section-header" style="margin-top:0">Cấu hình Phần 1 (Trắc nghiệm)</div>
+            <div class="config-row">
+                <div><label class="config-label">Số câu:</label><input type="number" id="cfg-p1-num" value="12"></div>
+                <div><label class="config-label">Điểm/câu:</label><input type="number" id="cfg-p1-score" value="0.25" step="0.01"></div>
+            </div>
+        </div>
+
+        <div class="config-group">
+            <div class="section-header">Cấu hình Phần 2 (Đúng/Sai)</div>
+            <div class="config-row">
+                <div><label class="config-label">Số câu:</label><input type="number" id="cfg-p2-num" value="4"></div>
+                <div><label class="config-label">Tính điểm:</label>
+                    <select id="cfg-p2-mode">
+                        <option value="bac_thang">Bậc thang (0.1 - 0.25 - 0.5 - 1)</option>
+                        <option value="chia_deu">Chia đều (0.25đ / ý)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="config-group">
+            <div class="section-header">Cấu hình Phần 3 (Trả lời ngắn)</div>
+            <div class="config-row">
+                <div><label class="config-label">Số câu:</label><input type="number" id="cfg-p3-num" value="6"></div>
+                <div><label class="config-label">Điểm/câu:</label><input type="number" id="cfg-p3-score" value="0.5" step="0.01"></div>
+            </div>
+        </div>
+
+        <div style="background: #e2e6ea; padding: 10px; margin: 10px 0; border-radius: 5px; font-size: 0.9em;">
+            <strong>Hướng dẫn:</strong> Nhập liên tiếp đáp án từ trên xuống dưới (Hết P1 -> P2 -> P3).
+        </div>
+        <textarea id="exam-data-input" rows="8" placeholder="Dán đáp án vào đây..."></textarea>
+        
+        <button class="btn" onclick="luuDeThi()">Lưu Đề Thi</button>
+        <button class="btn btn-outline" onclick="location.reload()">Thoát</button>
+    </div>
+
+    <div id="exam-interface" class="hidden">
+        <h2 id="exam-title-display"></h2>
+        <div id="questions-container"></div>
+        <button class="btn" onclick="nopBai()">NỘP BÀI</button>
+    </div>
+
+    <div id="result-interface" class="hidden">
+        <h2>KẾT QUẢ: <span id="score-display" style="color:red; font-size: 2em"></span></h2>
+        <div id="result-details"></div>
+        <button class="btn" onclick="location.reload()">Làm đề khác</button>
+    </div>
+</div>
+
+<script>
+    // --- THAY LINK API CỦA THẦY VÀO ĐÂY ---
+    const API_URL = "https://script.google.com/macros/s/AKfycbwrijo6SO5gMM5u7Adr24IaUA7_UoDmb5GKHzNWABLZ-tIK1Fr6FyOpEmX_8Xa4h2pc/exec"; 
+    // ---------------------------------------
+
+    let currentExamConfig = {};
+    let currentExamQuestions = [];
+    let studentName = "";
+    let examCode = "";
+
+    function showLoader(show) { document.getElementById('loader').style.display = show ? 'block' : 'none'; }
+    function hideAll() {
+        document.getElementById('main-screen').style.display = 'none';
+        document.getElementById('login-admin').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'none';
+        document.getElementById('exam-interface').style.display = 'none';
+        document.getElementById('result-interface').style.display = 'none';
+    }
+
+    async function vaoThi() {
+        studentName = document.getElementById('hs-name').value.trim();
+        examCode = document.getElementById('exam-code').value.trim();
+        if(!studentName || !examCode) return alert("Vui lòng nhập đủ thông tin!");
+
+        showLoader(true);
+        try {
+            const res = await fetch(`${API_URL}?action=get_exam&maDe=${examCode}&t=${Date.now()}`).then(r => r.json());
+            if(res.status === 'error') { alert(res.msg); showLoader(false); return; }
+            
+            hideAll();
+            document.getElementById('exam-interface').style.display = 'block';
+            document.getElementById('exam-title-display').innerText = res.data.tenDe;
+            
+            currentExamConfig = res.data.config;
+            currentExamQuestions = res.data.cauHoi;
+            renderQuestions(res.data.cauHoi, res.data.config);
+        } catch(e) { console.error(e); alert("Lỗi kết nối!"); }
+        showLoader(false);
+    }
+
+    function renderQuestions(list, config) {
+        let html = '';
+        let p1_end = parseInt(config.p1_num);
+        let p2_end = p1_end + parseInt(config.p2_num);
+
+        list.forEach((c, i) => {
+            if (i === 0 && config.p1_num > 0) html += `<div class="section-header">PHẦN 1: TRẮC NGHIỆM (${config.p1_score}đ/câu)</div>`;
+            if (i === p1_end && config.p2_num > 0) html += `<div class="section-header">PHẦN 2: ĐÚNG/SAI (${config.p2_mode === 'chia_deu' ? 'Chia đều' : 'Bậc thang'})</div>`;
+            if (i === p2_end && config.p3_num > 0) {
+                html += `<div class="section-header">PHẦN 3: TRẢ LỜI NGẮN (${config.p3_score}đ/câu)</div>`;
+                html += `<div class="warning-box">⚠️ Lưu ý: Dùng dấu chấm để nhập số thập phân (Ví dụ: 2.5)</div>`;
+            }
+
+            html += `<div class="question-box"><span class="q-title">Câu ${c.id}:</span>`;
+
+            if(c.dang === 1) { 
+                html += `<div class="options-grid">`;
+                ['A','B','C','D'].forEach(opt => {
+                    html += `<label class="option-item"><span class="option-label">${opt}</span><input type="radio" name="c${i}" value="${opt}"></label>`;
+                });
+                html += `</div>`;
+            } 
+            else if(c.dang === 2) { 
+                html += `<div>`;
+                ['a','b','c','d'].forEach((y, yi) => {
+                    html += `<div class="matrix-row"><span class="matrix-label">Ý ${y}:</span> 
+                        <div class="tf-group">
+                            <label class="tf-item"><span class="tf-text">Đ</span><input type="radio" name="c${i}_${yi}" value="true"></label> 
+                            <label class="tf-item"><span class="tf-text">S</span><input type="radio" name="c${i}_${yi}" value="false"></label>
+                        </div></div>`;
+                });
+                html += `</div>`;
+            } 
+            else { 
+                html += `<input type="text" id="c${i}" inputmode="decimal" placeholder="Nhập kết quả...">`;
+            }
+            html += `</div>`;
+        });
+        document.getElementById('questions-container').innerHTML = html;
+    }
+
+    async function nopBai() {
+        if(!confirm("Nộp bài ngay?")) return;
+        
+        let baiLam = [];
+        currentExamQuestions.forEach((c, i) => {
+            if(c.dang === 1) {
+                const el = document.querySelector(`input[name="c${i}"]:checked`);
+                baiLam.push(el ? el.value : "");
+            } else if(c.dang === 2) {
+                let ans = [];
+                for(let j=0; j<4; j++) {
+                    const el = document.querySelector(`input[name="c${i}_${j}"]:checked`);
+                    ans.push(el ? (el.value === 'true') : null);
+                }
+                baiLam.push(ans);
+            } else {
+                let val = document.getElementById(`c${i}`).value.replace(',', '.');
+                baiLam.push(val);
+            }
+        });
+
+        showLoader(true);
+        const formData = new FormData();
+        formData.append('action', 'submit_exam');
+        formData.append('maDe', examCode);
+        formData.append('tenHS', studentName);
+        formData.append('baiLam', JSON.stringify(baiLam));
+
+        try {
+            const res = await fetch(API_URL, { method: 'POST', body: formData }).then(r => r.json());
+            showLoader(false);
+            if(res.status === 'error') { alert(res.msg); return; }
+
+            hideAll();
+            document.getElementById('result-interface').style.display = 'block';
+            document.getElementById('score-display').innerText = res.diem.toFixed(2);
+            
+            let html = '';
+            res.chiTiet.forEach((item, idx) => {
+                let userChoice = baiLam[idx];
+                let isCorrect = (item.diem > 0); 
+                let color = isCorrect ? 'green' : 'red';
+                let style = `border-bottom:1px solid #eee; padding:15px; background: ${isCorrect ? '#f0fff4' : '#fff5f5'}`;
+                
+                html += `<div style="${style}"><strong>Câu ${item.cau}:</strong> <span style="color:${color}; font-weight:bold">+${item.diem}</span>`;
+                
+                if (Array.isArray(item.ketQua)) { 
+                     let visual = item.ketQua.map(k => k ? '✅' : '❌').join(' ');
+                     let userText = userChoice.map(u => u===true?'Đ':(u===false?'S':'_')).join('-');
+                     html += `<br>Kết quả: ${visual} (Chọn: ${userText})`;
+                } else {
+                    html += `<br>Kết quả: ${item.ketQua === 'Đúng' ? 'Đúng' : 'Sai'} (Bạn chọn: <b>${userChoice || 'Trống'}</b>)`;
+                }
+                html += `</div>`;
+            });
+            document.getElementById('result-details').innerHTML = html;
+
+        } catch(e) { alert("Lỗi nộp bài!"); showLoader(false); }
+    }
+
+    // --- GIÁO VIÊN ---
+    function showLoginAdmin() { hideAll(); document.getElementById('login-admin').style.display = 'block'; }
+
+    async function loginAdmin() {
+        const pass = document.getElementById('admin-pass').value;
+        showLoader(true);
+        const formData = new FormData();
+        formData.append('action', 'admin_login');
+        formData.append('pass', pass);
+        const res = await fetch(API_URL, { method: 'POST', body: formData }).then(r => r.json());
+        showLoader(false);
+        if(res.status === 'ok') { hideAll(); document.getElementById('admin-panel').style.display = 'block'; } 
+        else { alert(res.msg); }
+    }
+
+    async function luuDeThi() {
+        const ma = document.getElementById('new-exam-code').value.trim();
+        const ten = document.getElementById('new-exam-name').value.trim();
+        const cfg = {
+            p1_num: parseInt(document.getElementById('cfg-p1-num').value) || 0,
+            p1_score: parseFloat(document.getElementById('cfg-p1-score').value) || 0,
+            p2_num: parseInt(document.getElementById('cfg-p2-num').value) || 0,
+            p2_mode: document.getElementById('cfg-p2-mode').value,
+            p3_num: parseInt(document.getElementById('cfg-p3-num').value) || 0,
+            p3_score: parseFloat(document.getElementById('cfg-p3-score').value) || 0
+        };
+        const raw = document.getElementById('exam-data-input').value;
+        if(!ma || !ten || !raw) return alert("Vui lòng nhập đủ thông tin!");
+
+        let lines = raw.split('\n').filter(l => l.trim() !== "");
+        let dapAn = [];
+        let totalQ = cfg.p1_num + cfg.p2_num + cfg.p3_num;
+        let currentLine = 0;
+        
+        function parseLine(line) { let dot = line.indexOf('.'); return dot === -1 ? line.trim() : line.substring(dot+1).trim(); }
+
+        for(let i=0; i<cfg.p1_num; i++) {
+            if(currentLine >= lines.length) break;
+            dapAn.push({id: i+1, dang: 1, dapAn: parseLine(lines[currentLine++]).toUpperCase()});
+        }
+        for(let i=0; i<cfg.p2_num; i++) {
+            if(currentLine >= lines.length) break;
+            let arr = parseLine(lines[currentLine++]).split('').map(c => c.toUpperCase() === 'Đ');
+            dapAn.push({id: dapAn.length+1, dang: 2, dapAn: arr, soY: 4});
+        }
+        for(let i=0; i<cfg.p3_num; i++) {
+            if(currentLine >= lines.length) break;
+            dapAn.push({id: dapAn.length+1, dang: 3, dapAn: parseFloat(parseLine(lines[currentLine++]).replace(',', '.'))});
+        }
+
+        if (dapAn.length !== totalQ) {
+            if(!confirm(`Cấu hình ${totalQ} câu nhưng đọc được ${dapAn.length} dòng. Lưu không?`)) return;
+        }
+
+        const payload = { maDe: ma, tenDe: ten, dapAn: dapAn, config: cfg };
+        const formData = new FormData();
+        formData.append('action', 'save_exam');
+        formData.append('data', JSON.stringify(payload));
+        
+        showLoader(true);
+        await fetch(API_URL, { method: 'POST', body: formData });
+        alert("Lưu thành công!");
+        showLoader(false);
+    }
+</script>
+
+</body>
+</html>
