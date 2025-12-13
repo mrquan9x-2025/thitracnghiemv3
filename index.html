@@ -60,6 +60,26 @@
         
         .hidden { display: none; }
     </style>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+    /* Thêm CSS cho dòng lời nhắn */
+    .feedback-msg {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 8px;
+        font-style: italic;
+        text-align: center;
+        font-size: 1.1em;
+        animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* Màu sắc theo mức độ */
+    .fb-low { background: #fff5f5; color: #c53030; border-left: 5px solid #c53030; } /* Đỏ */
+    .fb-mid { background: #fffaf0; color: #d69e2e; border-left: 5px solid #d69e2e; } /* Vàng cam */
+    .fb-high { background: #f0fff4; color: #2f855a; border-left: 5px solid #2f855a; } /* Xanh lá */
+</style>
 </head>
 <body>
 
@@ -71,7 +91,7 @@
         <p class="brand-subtitle">Chăm học Toán - Sáng tương lai</p>
         
         <input type="text" id="hs-name" placeholder="Họ và tên học sinh">
-        <input type="text" id="exam-code" placeholder="Nhập Mã Đề Thi (do Thầy Cô cung cấp) - Chú ý VIẾT HOA">
+        <input type="text" id="exam-code" placeholder="Nhập Mã Đề Thi (do GV cung cấp) - Chú ý VIẾT HOA">
         <button class="btn" onclick="vaoThi()">BẮT ĐẦU LÀM BÀI</button>
         <button class="btn btn-outline" onclick="showLoginAdmin()" style="font-size: 0.85em; padding: 8px;">Dành cho Giáo viên</button>
     </div>
@@ -253,11 +273,75 @@
             showLoader(false);
             if(res.status === 'error') { alert(res.msg); return; }
 
+// ... (Phần trên giữ nguyên) ...
+            
             hideAll();
             document.getElementById('result-interface').style.display = 'block';
             document.getElementById('score-display').innerText = res.diem.toFixed(2);
             
+            // --- PHẦN MỚI: HIỂN THỊ LỜI NHẮN ĐỘNG VIÊN ---
+            const diem = res.diem;
+            const ten = studentName.split(' ').pop(); // Lấy tên (ví dụ "Nguyễn Văn A" -> "A")
+            let msg = "";
+            let msgClass = "";
+
+            // Ngân hàng lời nhắn
+            const msgList = {
+                lv1: ["Vạn sự khởi đầu nan, đừng nản chí {ten} nhé!", "Thất bại là mẹ thành công, cố lên {ten} ơi!", "Cần ôn kỹ lại lý thuyết nha {ten}, thầy tin em sẽ tiến bộ.", "Đừng buồn nhé {ten}, lần sau chắc chắn sẽ tốt hơn!", "Cố gắng hơn chút nữa nhé {ten}, không sao đâu!"],
+                lv2: ["Đã có cố gắng, nhưng cần tập trung hơn nha {ten}.", "Khá hơn rồi đó {ten}, nhưng chưa đạt phong độ tốt nhất đâu.", "Cẩn thận hơn xíu nữa là điểm cao ngay thôi {ten} ơi.", "Nắm chắc kiến thức cơ bản hơn nhé {ten}.", "Tiếp tục nỗ lực nhé {ten}, sắp chạm mốc Khá rồi."],
+                lv3: ["Kết quả khá tốt, phát huy nhé {ten}!", "Nền tảng ổn rồi, {ten} cố gắng luyện đề nhiều hơn nha.", "Sắp giỏi rồi, cố thêm chút nữa nào {ten}.", "Phong độ ổn định, chúc mừng {ten}.", "Làm tốt lắm {ten}, lần sau mục tiêu 8+ nhé!"],
+                lv4: ["Giỏi lắm {ten}, kiến thức rất vững!", "Rất đáng khen, {ten} giữ vững phong độ nhé.", "Điểm số đẹp, chúc mừng {ten} nha.", "Tuyệt vời, {ten} đã vượt qua chính mình.", "Thầy rất vui vì sự tiến bộ của {ten}."],
+                lv5: ["Xuất sắc! {ten} làm thầy rất tự hào.", "Quá đỉnh, kiến thức của {ten} rất sâu rộng.", "Chỉ thiếu chút xíu nữa là điểm tuyệt đối rồi {ten} ơi.", "Tuyệt vời ông mặt trời! Chúc mừng {ten}.", "Phong độ đỉnh cao, tiếp tục thế này nhé {ten}!"],
+                lv6: ["TUYỆT ĐỐI! {ten} là niềm tự hào của lớp Toán thầy Quân.", "Không còn gì để chê, {ten} quá xuất sắc!", "Đỉnh của chóp! Chúc mừng {ten} nhé.", "Một bài làm hoàn hảo, 10 điểm cho sự nỗ lực của {ten}.", "Thầy rất ấn tượng với bài làm của {ten}!"]
+            };
+
+            // Chọn nhóm lời nhắn
+            let selectedArr = [];
+            if (diem < 4) { selectedArr = msgList.lv1; msgClass = "fb-low"; }
+            else if (diem < 6) { selectedArr = msgList.lv2; msgClass = "fb-mid"; }
+            else if (diem < 7) { selectedArr = msgList.lv3; msgClass = "fb-mid"; }
+            else if (diem < 8) { selectedArr = msgList.lv4; msgClass = "fb-high"; }
+            else if (diem <= 9) { selectedArr = msgList.lv5; msgClass = "fb-high"; } // Sửa 8-9 bao gồm cả 9
+            else { selectedArr = msgList.lv6; msgClass = "fb-high"; }
+
+            // Random lời nhắn và thay tên
+            let randomMsg = selectedArr[Math.floor(Math.random() * selectedArr.length)];
+            msg = randomMsg.replace("{ten}", ten);
+
+            // Chèn vào giao diện (Thêm thẻ div feedback nếu chưa có)
+            let resultContainer = document.getElementById('result-interface');
+            let feedbackDiv = document.getElementById('feedback-msg');
+            if (!feedbackDiv) {
+                feedbackDiv = document.createElement('div');
+                feedbackDiv.id = 'feedback-msg';
+                // Chèn ngay dưới điểm số (score-display nằm trong h2)
+                resultContainer.insertBefore(feedbackDiv, document.getElementById('result-details'));
+            }
+            feedbackDiv.className = `feedback-msg ${msgClass}`;
+            feedbackDiv.innerHTML = `<strong>Lời thầy nhắn:</strong><br>"${msg}"`;
+
+            // HIỆU ỨNG PHÁO HOA (Nếu điểm >= 8)
+            if (diem >= 8) {
+                var duration = 3 * 1000;
+                var animationEnd = Date.now() + duration;
+                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+                var interval = setInterval(function() {
+                    var timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) { return clearInterval(interval); }
+                    var particleCount = 50 * (timeLeft / duration);
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+                }, 250);
+            }
+            // Hàm phụ trợ cho pháo hoa
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+            
+            // ----------------------------------------------
+
+            // Render chi tiết (Giữ nguyên phần cũ)
             let html = '';
+            // ... (Phần hiển thị chi tiết câu hỏi giữ nguyên như cũ)
             res.chiTiet.forEach((item, idx) => {
                 let userChoice = baiLam[idx];
                 let isCorrect = (item.diem > 0); 
