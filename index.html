@@ -91,7 +91,7 @@
         <p class="brand-subtitle">Chăm học Toán - Sáng tương lai</p>
         
         <input type="text" id="hs-name" placeholder="Họ và tên học sinh">
-        <input type="text" id="exam-code" placeholder="Nhập Mã Đề Thi (do GV cung cấp) - Chú ý VIẾT HOA">
+        <input type="text" id="exam-code" placeholder="Nhập Mã Đề Thi - Chú ý VIẾT HOA">
         <button class="btn" onclick="vaoThi()">BẮT ĐẦU LÀM BÀI</button>
         <button class="btn btn-outline" onclick="showLoginAdmin()" style="font-size: 0.85em; padding: 8px;">Dành cho Giáo viên</button>
     </div>
@@ -233,7 +233,7 @@
                 html += `</div>`;
             } 
             else { 
-                html += `<input type="text" id="c${i}" inputmode="decimal" placeholder="Nhập kết quả...">`;
+                html += `<input type="text" id="c${i}" autocomplete="off" placeholder="Nhập kết quả...">`;
             }
             html += `</div>`;
         });
@@ -241,7 +241,7 @@
     }
 
     async function nopBai() {
-        if(!confirm("Nộp bài ngay?")) return;
+        if(!confirm("Ấn nộp xong chờ khoảng 3 giây để xem kết quả nhé! (Đừng vội ấn lần nữa)")) return;
         
         let baiLam = [];
         currentExamQuestions.forEach((c, i) => {
@@ -292,7 +292,7 @@
                 lv3: ["Kết quả khá tốt, phát huy nhé {ten}!", "Nền tảng khá ổn rồi, {ten} cố gắng luyện đề nhiều hơn nha.", "Sắp giỏi rồi, cố thêm chút nữa nào {ten}.", "Điểm này cho thấy {ten} đã nắm được kiến thức cơ bản. Tiếp tục cố gắng nhé!", "Khá ổn đó {ten}, lần sau mục tiêu 8+ nhé!"],
                 lv4: ["Kết quả ổn đó, chúc mừng {ten} vì sự tiến bộ này!", "Rất đáng khen, {ten} giữ vững phong độ nhé.", "Điểm số đẹp, chúc mừng {ten}! Tiếp tục phát huy nhé!", "{ten} ơi, chỉ cần cẩn thận chút xíu nữa là chạm mốc cao hơn rồi!", "{ten} đang học rất hiệu quả, cố gắng giữ nhịp này nha!"],
                 lv5: ["Một bài làm chất lượng cao, tiếp tục giữ phong độ nhé {ten}!", "Kiến thức của {ten} khá vững rồi, chúc mừng em!", "Chỉ thiếu chút xíu nữa là điểm tuyệt đối rồi {ten} ơi.", "Tuyệt vời ông mặt trời! Chúc mừng {ten}!", "Phong độ đỉnh chóp, tiếp tục thế này nhé {ten}!"],
-                lv6: ["ĐỈNH CHÓP! {ten} là niềm tự hào của cả lớp!", "Quá xịn rồi {ten}, đúng chuẩn học sinh gương mẫu!", "Đỉnh của chóp! Chúc mừng {ten} nhé.", "Một bài làm ấn tượng, 10 điểm cho sự nỗ lực của {ten}.", "Tuyệt vời ông mặt trời! Chúc mừng {ten}!"]
+                lv6: ["ĐỈNH CHÓP! {ten} là niềm tự hào của cả lớp!", "Quá xịn rồi {ten}, đúng chuẩn học sinh gương mẫu!", "Đỉnh của chóp! Chúc mừng {ten} nhé.", "Kết quả rất ấn tượng, 10 điểm cho sự nỗ lực của {ten}.", "Tuyệt vời ông mặt trời! Chúc mừng {ten}!"]
             };
 
             // Chọn nhóm lời nhắn
@@ -318,7 +318,7 @@
                 resultContainer.insertBefore(feedbackDiv, document.getElementById('result-details'));
             }
             feedbackDiv.className = `feedback-msg ${msgClass}`;
-            feedbackDiv.innerHTML = `<strong>Lời thầy nhắn:</strong><br>"${msg}"`;
+            feedbackDiv.innerHTML = `<strong>Lời Thầy nhắn:</strong><br>"${msg}"`;
 
             // HIỆU ỨNG PHÁO HOA (Nếu điểm >= 8)
             if (diem >= 8) {
