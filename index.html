@@ -261,7 +261,7 @@
     }
 
     async function nopBai() {
-        if(!confirm("Ấn OK và chờ khoảng 5 giây để xem kết quả. Đừng vội ấn nộp lần nữa đấy nhé.")) return;
+        if(!confirm("Ấn OK và chờ khoảng 3 giây để xem kết quả.")) return;
         // 1. LẤY NÚT VÀ KHÓA NÚT LẠI NGAY LẬP TỨC
         const btnSubmit = document.querySelector('#exam-interface .btn'); 
         const originalText = btnSubmit.innerHTML; // Lưu lại chữ "NỘP BÀI" cũ
@@ -322,7 +322,7 @@
             // Ngân hàng lời nhắn
             const msgList = {
                 lv1: ["Vạn sự khởi đầu nan, đừng nản chí {ten} nhé!", "Thất bại là mẹ thành công, cố lên {ten} ơi!", "Cần ôn kỹ lại lý thuyết nha {ten}, em sẽ tiến bộ.", "Đừng buồn nhé {ten}, lần sau chắc chắn sẽ tốt hơn!", "Cố gắng hơn chút nữa nhé {ten}, mỗi lần thử là một bước tiến rồi!"],
-                lv2: ["Đã có cố gắng, nhưng cần tập trung hơn nha {ten}.", "Khá hơn rồi đó {ten}, nhưng chưa đạt phong độ tốt nhất đâu.", "Cẩn thận hơn xíu nữa là điểm cao ngay thôi {ten} ơi.", "Nắm chắc kiến thức cơ bản hơn nhé {ten}.", "Tiếp tục nỗ lực nhé {ten}, sắp chạm mốc Khá rồi."],
+                lv2: ["Đã có cố gắng, nhưng cần tập trung hơn nha {ten}.", "Khá hơn rồi đó {ten}, nhưng chưa đạt phong độ tốt nhất đâu.", "Cẩn thận hơn xíu nữa là điểm cao ngay thôi {ten} ơi.", "Ôn luyện bài tập cơ bản nhiều hơn nhé {ten}.", "Tiếp tục nỗ lực nhé {ten}, sắp chạm mốc Khá rồi."],
                 lv3: ["Kết quả khá tốt, phát huy nhé {ten}!", "Nền tảng khá ổn rồi, {ten} cố gắng luyện đề nhiều hơn nha.", "Sắp giỏi rồi, cố thêm chút nữa nào {ten}.", "Điểm này cho thấy {ten} đã nắm được kiến thức cơ bản. Tiếp tục cố gắng nhé!", "Khá ổn đó {ten}, lần sau mục tiêu 8+ nhé!"],
                 lv4: ["Kết quả ổn đó, chúc mừng {ten} vì sự tiến bộ này!", "Rất đáng khen, {ten} giữ vững phong độ nhé.", "Điểm số đẹp, chúc mừng {ten}! Tiếp tục phát huy nhé!", "{ten} ơi, chỉ cần cẩn thận chút xíu nữa là chạm mốc cao hơn rồi!", "{ten} đang học rất hiệu quả, cố gắng giữ nhịp này nha!"],
                 lv5: ["Một bài làm chất lượng cao, tiếp tục giữ phong độ nhé {ten}!", "Kiến thức của {ten} khá vững rồi, chúc mừng em!", "Chỉ thiếu chút xíu nữa là điểm tuyệt đối rồi {ten} ơi.", "Tuyệt vời ông mặt trời! Chúc mừng {ten}!", "Phong độ đỉnh chóp, tiếp tục thế này nhé {ten}!"],
