@@ -59,6 +59,26 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
         .hidden { display: none; }
+
+/* Spinner nhỏ nằm trong nút bấm */
+.btn-loader {
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+/* Trạng thái nút khi đang xử lý */
+.btn:disabled {
+    background-color: #95a5a6; /* Màu xám */
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
     </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -242,7 +262,15 @@
 
     async function nopBai() {
         if(!confirm("Ấn OK và chờ khoảng 5 giây để xem kết quả. Đừng vội ấn nộp lần nữa đấy nhé.")) return;
+        // 1. LẤY NÚT VÀ KHÓA NÚT LẠI NGAY LẬP TỨC
+        const btnSubmit = document.querySelector('#exam-interface .btn'); 
+        const originalText = btnSubmit.innerHTML; // Lưu lại chữ "NỘP BÀI" cũ
         
+        // Đổi giao diện nút -> Đang loading
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<div class="btn-loader"></div> Đang chấm điểm...';
+
+	// 2. Thu thập dữ liệu bài làm (Giữ nguyên logic cũ)
         let baiLam = [];
         currentExamQuestions.forEach((c, i) => {
             if(c.dang === 1) {
@@ -260,7 +288,7 @@
                 baiLam.push(val);
             }
         });
-
+        // 3. Gửi dữ liệu đi
         showLoader(true);
         const formData = new FormData();
         formData.append('action', 'submit_exam');
@@ -271,7 +299,13 @@
         try {
             const res = await fetch(API_URL, { method: 'POST', body: formData }).then(r => r.json());
             showLoader(false);
-            if(res.status === 'error') { alert(res.msg); return; }
+            // Nếu lỗi thì mở lại nút để nộp lại
+            if(res.status === 'error') { 
+                alert(res.msg); 
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = originalText;
+                return; 
+            }
 
 // ... (Phần trên giữ nguyên) ...
             
@@ -361,7 +395,13 @@
             });
             document.getElementById('result-details').innerHTML = html;
 
-        } catch(e) { alert("Lỗi nộp bài!"); showLoader(false); }
+        } catch(e) { 
+            alert("Lỗi nộp bài! Vui lòng kiểm tra mạng."); 
+            console.error(e);
+            // Mở lại nút nếu lỗi mạng
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = originalText;
+        }
     }
 
     // --- GIÁO VIÊN ---
