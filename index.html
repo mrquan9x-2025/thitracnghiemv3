@@ -60,24 +60,35 @@
         
         .hidden { display: none; }
 
-/* Spinner nhỏ nằm trong nút bấm */
-.btn-loader {
-    border: 3px solid rgba(255,255,255,0.3);
-    border-top: 3px solid white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 1s linear infinite;
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 10px;
-}
-/* Trạng thái nút khi đang xử lý */
-.btn:disabled {
-    background-color: #95a5a6; /* Màu xám */
-    cursor: not-allowed;
-    opacity: 0.8;
-}
+	/* Spinner nhỏ nằm trong nút bấm */
+	.btn-loader {
+    		border: 3px solid rgba(255,255,255,0.3);
+    		border-top: 3px solid white;
+    		border-radius: 50%;
+    		width: 20px;
+    		height: 20px;
+    		animation: spin 1s linear infinite;
+    		display: inline-block;
+    		vertical-align: middle;
+    		margin-right: 10px;
+	}
+	/* Trạng thái nút khi đang xử lý */
+		.btn:disabled {
+    		background-color: #95a5a6; /* Màu xám */
+    		cursor: not-allowed;
+    		opacity: 0.8;
+	}
+
+	/* Thêm vào trong thẻ <style> */
+	.footer-credit {
+    		margin-top: 40px;
+    		font-size: 12px;
+    		color: #999;
+    		text-align: center;
+    		border-top: 1px solid #eee;
+    		padding-top: 15px;
+    		font-family: monospace; /* Font chữ kiểu code cho ngầu */
+	}
 
     </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -106,14 +117,17 @@
 <div class="container">
     <div id="loader" class="loader"></div>
     
-    <div id="main-screen">
-        <h1 class="brand-title">TOÁN THẦY QUÂN</h1>
-        <p class="brand-subtitle">Chăm học Toán - Sáng tương lai</p>
+<div id="main-screen">
+        <h1 class="brand-title">LỚP TOÁN THẦY QUÂN</h1>
+        
+        <p class="brand-subtitle" id="slogan-display">Chăm học Toán - Sáng tương lai</p>
         
         <input type="text" id="hs-name" placeholder="Họ và tên học sinh">
-        <input type="text" id="exam-code" placeholder="Nhập Mã Đề Thi - Chú ý VIẾT HOA">
+        <input type="text" id="exam-code" placeholder="Nhập Mã Đề Thi (do Thầy cung cấp)">
         <button class="btn" onclick="vaoThi()">BẮT ĐẦU LÀM BÀI</button>
         <button class="btn btn-outline" onclick="showLoginAdmin()" style="font-size: 0.85em; padding: 8px;">Dành cho Giáo viên</button>
+
+        <div class="footer-credit">Design by Quân PT</div>
     </div>
 
     <div id="login-admin" class="hidden">
@@ -180,6 +194,24 @@
 </div>
 
 <script>
+// --- CẤU HÌNH SLOGAN NGẪU NHIÊN ---
+    // Thầy thay nội dung 5 câu nói ở đây nhé:
+    const listSlogans = [
+        "Chăm học Toán - Sáng tương lai",
+        "Cách duy nhất để Học Toán là Làm Toán",
+        "Mỗi ngày học tập là một cơ hội để trở thành phiên bản tốt hơn của chính mình",
+        "Hãy học khi người khác ngủ, lao động khi người khác lười nhác, chuẩn bị khi người khác chơi bời và có được giấc mơ của mình khi mọi người chỉ ao ước.",
+        "Học tập giống như chèo thuyền ngược dòng, không tiến ắt sẽ lùi"
+    ];
+
+    // Tự động chọn 1 câu và hiển thị khi trang web tải xong
+    document.addEventListener("DOMContentLoaded", function() {
+        const randomSlogan = listSlogans[Math.floor(Math.random() * listSlogans.length)];
+        const sloganElement = document.getElementById('slogan-display');
+        if(sloganElement) sloganElement.innerText = randomSlogan;
+    });
+    // -----------------------------------
+
     // --- THAY LINK API CỦA THẦY VÀO ĐÂY ---
     const API_URL = "https://script.google.com/macros/s/AKfycbwrijo6SO5gMM5u7Adr24IaUA7_UoDmb5GKHzNWABLZ-tIK1Fr6FyOpEmX_8Xa4h2pc/exec"; 
     // ---------------------------------------
