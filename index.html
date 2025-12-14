@@ -127,7 +127,7 @@
         <button class="btn" onclick="vaoThi()">BẮT ĐẦU LÀM BÀI</button>
         <button class="btn btn-outline" onclick="showLoginAdmin()" style="font-size: 0.85em; padding: 8px;">Dành cho Giáo viên</button>
 
-        <div class="footer-credit">Design by Quân PT</div>
+        <div class="footer-credit">Design by QuânPT</div>
     </div>
 
     <div id="login-admin" class="hidden">
@@ -293,7 +293,7 @@
     }
 
     async function nopBai() {
-        if(!confirm("Ấn OK và chờ khoảng 3 giây để xem kết quả.")) return;
+        if(!confirm("Bạn muốn nộp bài? Chờ 3 giây để xem kết quả!")) return;
         // 1. LẤY NÚT VÀ KHÓA NÚT LẠI NGAY LẬP TỨC
         const btnSubmit = document.querySelector('#exam-interface .btn'); 
         const originalText = btnSubmit.innerHTML; // Lưu lại chữ "NỘP BÀI" cũ
