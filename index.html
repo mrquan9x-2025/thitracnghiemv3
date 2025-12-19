@@ -212,6 +212,16 @@
     });
     // -----------------------------------
 
+    // --- HÀM CHUẨN HÓA HỌ TÊN TIẾNG VIỆT ---
+    function chuanHoaTen(str) {
+        // 1. Xóa khoảng trắng thừa ở đầu, cuối và giữa các từ
+        str = str.trim().replace(/\s+/g, ' ');
+        // 2. Chuyển tất cả về chữ thường, sau đó viết hoa chữ cái đầu mỗi từ
+        return str.toLowerCase().replace(/(^|\s)\S/g, function(l) { 
+            return l.toUpperCase(); 
+        });
+    }
+
     // --- THAY LINK API CỦA THẦY VÀO ĐÂY ---
     const API_URL = "https://script.google.com/macros/s/AKfycbwrijo6SO5gMM5u7Adr24IaUA7_UoDmb5GKHzNWABLZ-tIK1Fr6FyOpEmX_8Xa4h2pc/exec"; 
     // ---------------------------------------
@@ -231,9 +241,33 @@
     }
 
     async function vaoThi() {
-        studentName = document.getElementById('hs-name').value.trim();
-        examCode = document.getElementById('exam-code').value.trim();
-        if(!studentName || !examCode) return alert("Vui lòng nhập đủ thông tin!");
+         // --- CẬP NHẬT: XỬ LÝ HỌ TÊN THÔNG MINH ---
+        const nameInput = document.getElementById('hs-name');
+        let rawName = nameInput.value;
+        
+        // Bước 1: Chuẩn hóa (Tự động viết hoa chữ cái đầu)
+        let cleanName = chuanHoaTen(rawName);
+        
+        // Bước 2: Kiểm tra độ dài (Phải có ít nhất 2 từ)
+        if (!cleanName || cleanName.split(' ').length < 2) {
+            alert("Vui lòng nhập đầy đủ Họ và Tên (Ví dụ: Nguyễn Văn An)");
+            nameInput.focus();
+            return;
+        }
+
+        // Bước 3: Gán lại tên đã chuẩn hóa vào ô input để học sinh nhìn thấy
+        nameInput.value = cleanName;
+        studentName = cleanName; // Lưu vào biến toàn cục
+        // ------------------------------------------
+
+        const code = document.getElementById('exam-code').value.trim();
+        examCode = code; // Lưu mã đề
+
+        if (!studentName || !examCode) {
+            alert("Vui lòng nhập đủ Họ Tên và Mã đề!");
+            return;
+        }
+
 
         showLoader(true);
         try {
