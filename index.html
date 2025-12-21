@@ -89,7 +89,33 @@
     		padding-top: 15px;
     		font-family: monospace; /* Font chữ kiểu code cho ngầu */
 	}
+/*Đoạn này của meme*/
+	/* Nút hover đẹp hơn */
+    #meme-button:hover {
+        background: #2dd8bc;  /* Tối hơn chút khi hover */
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
 
+    /* Meme responsive hoàn hảo trên mọi thiết bị, đặc biệt mobile */
+    .meme-img {
+        max-width: 100%;     /* Không vượt quá chiều rộng màn hình/container */
+        max-height: 300px;   /* Giữ chiều cao tối đa */
+        height: auto;        /* Tự điều chỉnh tỷ lệ */
+        width: auto;         /* Giữ tỷ lệ gốc */
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        opacity: 0;
+        transition: opacity 0.6s ease;
+        display: block;      /* Tránh lỗi inline spacing */
+        margin: 0 auto;      /* Căn giữa chính xác */
+    }
+
+    /* Đảm bảo không tràn khung nếu có vấn đề overflow */
+    #meme-container {
+        overflow: hidden;    /* Ẩn phần tràn nếu có (an toàn) */
+    }
+	
     </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -99,7 +125,7 @@
         margin-top: 15px;
         padding: 15px;
         border-radius: 8px;
-        font-style: italic;
+        /* font-style: italic; */
         text-align: center;
         font-size: 1.1em;
         animation: fadeIn 1s ease-in;
@@ -392,14 +418,14 @@
             let msg = "";
             let msgClass = "";
 
-            // Ngân hàng lời nhắn
+           // Ngân hàng lời nhắn
             const msgList = {
-                lv1: ["Vạn sự khởi đầu nan, đừng nản chí {ten} nhé!", "Thất bại là mẹ thành công, cố lên {ten} ơi!", "Cần ôn kỹ lại lý thuyết nha {ten}, em sẽ tiến bộ.", "Đừng buồn nhé {ten}, lần sau chắc chắn sẽ tốt hơn!", "Cố gắng hơn chút nữa nhé {ten}, mỗi lần thử là một bước tiến rồi!"],
-                lv2: ["Đã có cố gắng, nhưng cần tập trung hơn nha {ten}.", "Khá hơn rồi đó {ten}, nhưng chưa đạt phong độ tốt nhất đâu.", "Cẩn thận hơn xíu nữa là điểm cao ngay thôi {ten} ơi.", "Ôn luyện bài tập cơ bản nhiều hơn nhé {ten}.", "Tiếp tục nỗ lực nhé {ten}, sắp chạm mốc Khá rồi."],
-                lv3: ["Kết quả khá tốt, phát huy nhé {ten}!", "Nền tảng khá ổn rồi, {ten} cố gắng luyện đề nhiều hơn nha.", "Sắp giỏi rồi, cố thêm chút nữa nào {ten}.", "Điểm này cho thấy {ten} đã nắm được kiến thức cơ bản. Tiếp tục cố gắng nhé!", "Khá ổn đó {ten}, lần sau mục tiêu 8+ nhé!"],
-                lv4: ["Kết quả ổn đó, chúc mừng {ten} vì sự tiến bộ này!", "Rất đáng khen, {ten} giữ vững phong độ nhé.", "Điểm số đẹp, chúc mừng {ten}! Tiếp tục phát huy nhé!", "{ten} ơi, chỉ cần cẩn thận chút xíu nữa là chạm mốc cao hơn rồi!", "{ten} đang học rất hiệu quả, cố gắng giữ nhịp này nha!"],
-                lv5: ["Một bài làm chất lượng cao, tiếp tục giữ phong độ nhé {ten}!", "Kiến thức của {ten} khá vững rồi, chúc mừng em!", "Chỉ thiếu chút xíu nữa là điểm tuyệt đối rồi {ten} ơi.", "Tuyệt vời ông mặt trời! Chúc mừng {ten}!", "Phong độ đỉnh chóp, tiếp tục thế này nhé {ten}!"],
-                lv6: ["ĐỈNH CHÓP! {ten} là niềm tự hào của cả lớp!", "Quá xịn rồi {ten}, đúng chuẩn học sinh gương mẫu!", "Đỉnh của chóp! Chúc mừng {ten} nhé.", "Kết quả rất ấn tượng, 10 điểm cho sự nỗ lực của {ten}.", "Tuyệt vời ông mặt trời! Chúc mừng {ten}!"]
+                lv1: ["Vạn sự khởi đầu nan 🌱, đừng nản chí {ten} nhé! 💪", "Thất bại là mẹ thành công 🐣, cố lên {ten} ơi! 🚀", "Cần ôn kỹ lại lý thuyết nha {ten} 📚, em sẽ tiến bộ nhanh thôi! 💪", "Đừng buồn nhé {ten} 🤗, lần sau chắc chắn sẽ tốt hơn nhiều! 🌈", "Cố gắng hơn chút nữa nhé {ten} 💪, mỗi lần thử là một bước tiến rồi! 🏃"],
+                lv2: ["Đã có cố gắng 👍, nhưng cần tập trung hơn nha {ten} ⚡", "Cẩn thận hơn chút nữa nhé {ten} 📝, phong độ sẽ lên nhanh thôi 😉", "Cẩn thận hơn xíu nữa là điểm cao ngay thôi {ten} ơi 🎯", "Ôn luyện bài tập cơ bản nhiều hơn nhé {ten} 📚", "Tiếp tục nỗ lực nhé {ten} 💪, sắp chạm mốc Khá rồi 🌻"],
+                lv3: ["Kết quả khá đó 👏, phát huy và cố gắng lên nhé {ten}! 😉", "Nền tảng khá ổn rồi 👏, {ten} cố gắng luyện đề nhiều hơn nha 🔥", "Sắp giỏi rồi 🌟, cố thêm chút nữa nào {ten} 🚴", "Điểm này cho thấy {ten} đã nắm được kiến thức cơ bản 👍. Tiếp tục cố gắng nhé! 🌈", "Khá ổn đó {ten} 😎, lần sau mục tiêu 8+ nhé! 💪"],
+                lv4: ["Kết quả ổn đó 👏, chúc mừng {ten} vì sự tiến bộ này! 🎉", "Rất đáng khen 👏, {ten} giữ vững phong độ nhé 😉", "Điểm số đẹp 🌟, chúc mừng {ten}! Tiếp tục phát huy nhé! 🚀", "{ten} ơi, chỉ cần cẩn thận chút xíu nữa là chạm mốc cao hơn rồi! 🔥", "{ten} đang học rất hiệu quả 🔥, cố gắng giữ nhịp này nha! 😎"],
+                lv5: ["Một bài làm chất lượng cao 🌟, tiếp tục giữ phong độ nhé {ten}! 🚀", "Kiến thức của {ten} khá vững rồi 🌈, chúc mừng em! 👏", "Chỉ thiếu chút xíu nữa là điểm tuyệt đối rồi {ten} ơi 🤩", "Tuyệt vời ông mặt trời! 🌞 Chúc mừng {ten}! 👏", "Phong độ đỉnh chóp 👍, tiếp tục thế này nhé {ten}! 🌟"],
+                lv6: ["ĐỈNH CHÓP! 💯 {ten} là niềm tự hào của cả lớp! 😍", "Quá xịn rồi {ten} 🎉, đúng chuẩn học sinh gương mẫu! 👍", "Đỉnh của chóp! 👍 Chúc mừng {ten} nhé 🎉", "Kết quả rất ấn tượng 🤩, 10 điểm tròn trịa cho sự nỗ lực của {ten} 🎉", "Tuyệt vời ông mặt trời! 🌞 Chúc mừng {ten}! 🎉"]
             };
 
             // Chọn nhóm lời nhắn
@@ -427,7 +453,151 @@
             feedbackDiv.className = `feedback-msg ${msgClass}`;
             feedbackDiv.innerHTML = `<strong>Lời Thầy nhắn:</strong><br>"${msg}"`;
 
-            // HIỆU ỨNG PHÁO HOA (Nếu điểm >= 8)
+            // --- PHẦN MỚI: HIỂN THỊ MEME VUI ---
+            // Kho meme (URL trực tiếp, load nhanh, tôi chọn meme vui, tích cực, phù hợp học sinh)
+            const memeList = {
+                low: [ // Dưới 6 điểm (lv1 + lv2)
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUya3V4NDA5bjJmNjIwaDlla2J0bTM2b3VteWoxYnA2eTdoZDEweDdvZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yoJC2K6rCzwNY2EngA/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycWZuZTdnaWJjYXl1a3I4a2N6YnppanYyY25ucW91Y2Y1bDl3M3A4bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/h99SOT2cABIUE/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycDdtZnN6eDI4bWpyanU5MjIxNWh2enNwaXdzaHAzZG1iaW9qa2d4NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2uh5yKKmZjDFUy2DOM/giphy.gif",
+                   "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyNDdxZnhiamQ1Mm9ycmFuMmNnMG5pZ2xnbHlpemU5NDlmeTl2bm10aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tBWTS5iya1Nkh1uiB9/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyZ2diOW9rOGtyODFlaXdueDI0N2E5dnU1YzkzczJjcGdydnViNGoxcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jJ2zMk9eXoht2VFxEV/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyempoMDdxNzVhOW9wZjBjNXpqbTY4NTc4eXoweThyYWwzdmd1cmRrZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6XX4V0O8a0xdS/giphy.gif",
+		   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyOHl3b251ZmtuODBnNWJqajQ5anNoOGNmbHhreTFrajZpYTNzM3BqcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6nUQzWnaMz1cDrmo/giphy.gif"
+                ],
+                lv3: [ // 6-7 điểm: khá tốt, cố thêm chút
+                   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyanhxbzBja3Zjb3V3em9mM3NzdjhobWFoYnV0MXJlejl4OGpkanc2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IQHTtgvQyHuEi5Epkq/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUya3V4NDA5bjJmNjIwaDlla2J0bTM2b3VteWoxYnA2eTdoZDEweDdvZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yoJC2K6rCzwNY2EngA/giphy.gif",
+                   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyOHl3b251ZmtuODBnNWJqajQ5anNoOGNmbHhreTFrajZpYTNzM3BqcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6nUQzWnaMz1cDrmo/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyMm9uYmVwdmMwbTQyZmNud3EyYmpnNTZ3MnJjdG4yb2RjcXBmZGF1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Xq3vAx5aX0gaifRAsk/giphy.gif",
+                   "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyNDdxZnhiamQ1Mm9ycmFuMmNnMG5pZ2xnbHlpemU5NDlmeTl2bm10aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tBWTS5iya1Nkh1uiB9/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyempoMDdxNzVhOW9wZjBjNXpqbTY4NTc4eXoweThyYWwzdmd1cmRrZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6XX4V0O8a0xdS/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyMmkzczBldDl4ZXFrcXo3cWM0aHdkdzV4eWlid204cmxuazNjdHgxZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUA7b1otxlfgvqZGJq/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyZ2diOW9rOGtyODFlaXdueDI0N2E5dnU1YzkzczJjcGdydnViNGoxcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jJ2zMk9eXoht2VFxEV/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyOTdsZXF1c291eW1qczF6OW9nbGxteXEzbXExejcyNnJjN3plZzFkeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FemTGpEZeK27M5fKL4/giphy.gif",
+                   "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyMThpZjIydHprZTAwZ3J2NXJ3YWZ3MGdka3ZuMDdmemlqNTkzOTdkayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUn3C8WqEzUEeQoRa0/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycDdtZnN6eDI4bWpyanU5MjIxNWh2enNwaXdzaHAzZG1iaW9qa2d4NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2uh5yKKmZjDFUy2DOM/giphy.gif"
+                ],
+                lv4: [ // 7-8 điểm: rất tốt, success!
+                   "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXE3cWF6Mm91dTRnaHRwa3RlZ2Jwa3czcms1YTdsYjBxOWpvc3M2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tIeCLkB8geYtW/giphy.gif",  // Cuu like
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyMm9uYmVwdmMwbTQyZmNud3EyYmpnNTZ3MnJjdG4yb2RjcXBmZGF1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Xq3vAx5aX0gaifRAsk/giphy.gif",
+                   "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycG85c3ZveDQxbHhqeHNicTBkaXI1aGV1azY4Y3lmemppZ2V4YmZ2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gnNxCUUzGiKuYnLxJN/giphy.gif",
+                   "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyNDdxZnhiamQ1Mm9ycmFuMmNnMG5pZ2xnbHlpemU5NDlmeTl2bm10aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tBWTS5iya1Nkh1uiB9/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyOTdsZXF1c291eW1qczF6OW9nbGxteXEzbXExejcyNnJjN3plZzFkeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FemTGpEZeK27M5fKL4/giphy.gif",
+                   "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyMThpZjIydHprZTAwZ3J2NXJ3YWZ3MGdka3ZuMDdmemlqNTkzOTdkayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUn3C8WqEzUEeQoRa0/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyaXpyYnkxbWxqZnp3ajJ2Z2M0N25uMDZiZWJwNWt2cGpsNGJyNG5uayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/9H279yb0blggo/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyMjBxb2pvcHhqdHE0bHN5dzJxbm83Nnljcm05cTF2OWc1b3E1cWM1NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/x0yxQpWV9gPMRHnw7u/giphy.gif",
+                   "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUybzV1MHB2Nm5uY2c5bXExc3N6MWZiaGRzb28weXo1a3F0eHoya2NweCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YJ09hqJCLme4g/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUycHhtZjdzbWFzZDB2NXZ4MXY3azhycHdoZmkzeGhmNnRxempmOGI3dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wvrn7MMemcOB2/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2c3ZWVmNzY3amFmenJrNGg4NGoycTkwcHUzb3A0dmxjZGxhbnEzMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PhR99fbNjhAAzopGnm/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXV0c3VwendhMmJ5ajZpcDV0MHY5ZWUyYW5qMHM0a3V3N2w4cm1rMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tnMUXTkYUWKe1dasNJ/giphy.gif"
+                ],
+                lv5: [ // 8-9 điểm: giỏi lắm, smart!
+                   "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycG85c3ZveDQxbHhqeHNicTBkaXI1aGV1azY4Y3lmemppZ2V4YmZ2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gnNxCUUzGiKuYnLxJN/giphy.gif",
+                   "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2t3MjAxODMwMTFoYnZoN3MyamlyNHFocTVvM2lzMDMxNjhxbGtsciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3NtY188QaxDdC/giphy.gif",
+                   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyancxNHF6ZnpkdWZlajdjYTh2d2xiczk2cXR4NTV3NnV3YnJzeHpuYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Swx36wwSsU49HAnIhC/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyNGF2djhjdGFsZmllYzFpYWFsZnc2NHEweTk2dTFtNTl1ZTY4bzlndSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/50YgxbPnjA1LG/giphy.gif",
+                   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyNnVvZncxZ2hocmExZnRjbDc5YTB4aDk4b2tlZGpnYTVtem84aTgxOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/s54cTulj6JbU0GOGg4/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyZWNocjdjbWp4bmRlaXczNGE3ZXNmNTdrdXh3MzJxYzhpbGppN25keiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Only6nbYqnhVcIaHO7/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyZWNocDNidG4wZGt3N201Y25rbHVyazNmbm9tNHNsdW4zNnBjeXlndSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AlQwFJLmBwVrJ2DFn3/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2c3ZWVmNzY3amFmenJrNGg4NGoycTkwcHUzb3A0dmxjZGxhbnEzMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PhR99fbNjhAAzopGnm/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyeTNiMnNpejlkOG9qNzV0Z3Q2azZ0bjdiZjIzbG9naDdpd3dqeW1xYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Q66ZEIpjEQddUOOKGW/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyb28xOGprZmJxeG5rYjV2dzV5bGVpZTEyZ2VlMzVkMnYyeXM1N3VrbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7absbD7PbTFQa0c8/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUydDFpMm1oanluNjJmcm1pb2pydzg2OWRvYzh2NnZ6ZXdsaTF4anFvNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t3sZxY5zS5B0z5zMIz/giphy.gif",
+                   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUybnc5NWwxYTNzc2Y4bnNrbm8xanp4MDdwZm1sY3BnMDB2NmF5NTc5ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BWD3CtcudWL28/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyMmkzczBldDl4ZXFrcXo3cWM0aHdkdzV4eWlid204cmxuazNjdHgxZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUA7b1otxlfgvqZGJq/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyaW4xZTRoMnB1aTdxYWhuamhnbW1taGF1NGVpdWIybG5yM2JldXEzbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AWTJeBx5MiEoEqDFIr/giphy.gif",
+                   "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUybzV1MHB2Nm5uY2c5bXExc3N6MWZiaGRzb28weXo1a3F0eHoya2NweCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YJ09hqJCLme4g/giphy.gif",
+"https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXE3cWF6Mm91dTRnaHRwa3RlZ2Jwa3czcms1YTdsYjBxOWpvc3M2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tIeCLkB8geYtW/giphy.gif",
+                   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyMnk4NnAwc2JnZGNkd3F4NmV0eDIyYTYwZWY4eXdzb3NwMzVtMnl5aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUjSOWCndCdECCyOEY/giphy.gif",
+                   "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnE2c2x5OGpoam5wMHMzbGh0bHNuZTY1eHc2ajVqZTIzOXhsNnEzeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qAmdxxyQ4XTt3KGt3c/giphy.gif"
+                ],
+                lv6: [ // Trên 9 điểm: đỉnh chóp, epic win!
+                   "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycG85c3ZveDQxbHhqeHNicTBkaXI1aGV1azY4Y3lmemppZ2V4YmZ2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gnNxCUUzGiKuYnLxJN/giphy.gif",
+                   "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2t3MjAxODMwMTFoYnZoN3MyamlyNHFocTVvM2lzMDMxNjhxbGtsciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3NtY188QaxDdC/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyNGF2djhjdGFsZmllYzFpYWFsZnc2NHEweTk2dTFtNTl1ZTY4bzlndSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/50YgxbPnjA1LG/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyaWwzcTJoNWM0MHJrc2hobWN4ZHlpbW5pNjJkcGh1b3dkMTdpeWNmMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nbvFVPiEiJH6JOGIok/giphy.gif",
+                   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyMnk4NnAwc2JnZGNkd3F4NmV0eDIyYTYwZWY4eXdzb3NwMzVtMnl5aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUjSOWCndCdECCyOEY/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyc2IyNnBuMms2OXlwMTZuejY2YjY0b2ZqM2lwM3Ixc2p6eGxueGYxdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cdXpgeB32BekIGzBNh/giphy.gif",
+                   "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyMmwzcHY3am03eGRlaTQzbXNua2drbTdpZmVtaDFyODBjejlmeWZ0eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bb1PFnM9zHnR3Ns3tG/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXV0c3VwendhMmJ5ajZpcDV0MHY5ZWUyYW5qMHM0a3V3N2w4cm1rMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tnMUXTkYUWKe1dasNJ/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyb28xOGprZmJxeG5rYjV2dzV5bGVpZTEyZ2VlMzVkMnYyeXM1N3VrbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7absbD7PbTFQa0c8/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyeTNiMnNpejlkOG9qNzV0Z3Q2azZ0bjdiZjIzbG9naDdpd3dqeW1xYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Q66ZEIpjEQddUOOKGW/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyMjBxb2pvcHhqdHE0bHN5dzJxbm83Nnljcm05cTF2OWc1b3E1cWM1NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/x0yxQpWV9gPMRHnw7u/giphy.gif",
+                   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyaW4xZTRoMnB1aTdxYWhuamhnbW1taGF1NGVpdWIybG5yM2JldXEzbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AWTJeBx5MiEoEqDFIr/giphy.gif",
+                   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUybnc5NWwxYTNzc2Y4bnNrbm8xanp4MDdwZm1sY3BnMDB2NmF5NTc5ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BWD3CtcudWL28/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUydDFpMm1oanluNjJmcm1pb2pydzg2OWRvYzh2NnZ6ZXdsaTF4anFvNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t3sZxY5zS5B0z5zMIz/giphy.gif",
+                   "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzVvOHVoc3FocHlrcGppdTJpcGxpZ3Q3ZjFkdm5ycXU5Y2dpdDI2MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KhdCldraGlzwqTc4Vb/giphy.gif",
+                   "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpzNXp2ZjIxZzliOWNrOXpkdHR2NzZoNHZwOGQ0Y3I5eG13OXBrcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/r1d69SdEpcxmhzlHd1/giphy.gif"
+                ]
+            };
+
+            // Xác định level meme
+            let selectedMemeArr = [];
+            if (diem < 6) {
+                selectedMemeArr = memeList.low;
+            } else if (diem < 7) {
+                selectedMemeArr = memeList.lv3;
+            } else if (diem < 8) {
+                selectedMemeArr = memeList.lv4;
+            } else if (diem <= 9) {
+                selectedMemeArr = memeList.lv5;
+            } else {
+                selectedMemeArr = memeList.lv6;
+            }
+
+           // Luôn hiển thị nút nếu có meme (tất cả level đều có)
+            let memeContainer = document.getElementById('meme-container');
+            if (!memeContainer) {
+                memeContainer = document.createElement('div');
+                memeContainer.id = 'meme-container';
+                memeContainer.style.display = 'none';  // Ẩn ban đầu
+                memeContainer.style.marginTop = '20px';
+                memeContainer.style.textAlign = 'center';  // Căn giữa meme
+                feedbackDiv.insertAdjacentElement('afterend', memeContainer);
+            }
+
+            // Đảm bảo khu vực nút cũng center (thêm text-align center cho feedbackDiv nếu chưa có)
+            feedbackDiv.style.textAlign = 'center';  // Thêm dòng này để nút và text center
+
+            let memeButton = document.getElementById('meme-button');
+            if (!memeButton) {
+                memeButton = document.createElement('button');
+                memeButton.id = 'meme-button';
+                memeButton.textContent = '👉🎁😉';
+
+                // Style cho nút - quay lại kích thước bạn muốn
+                memeButton.style.marginTop = '15px';
+                memeButton.style.padding = '8px 12px';     // Như bạn yêu cầu
+                memeButton.style.fontSize = '18px';         // Chữ 16px
+                memeButton.style.background = '#bef7f5';    // Màu nền xanh ngọc
+                memeButton.style.color = '#333333';         // Màu chữ
+                memeButton.style.border = 'none';
+                memeButton.style.borderRadius = '12px';
+                memeButton.style.cursor = 'pointer';
+                memeButton.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                
+                // QUAN TRỌNG: Các style để căn giữa hoàn hảo
+                memeButton.style.display = 'block';         // Đổi thành block để margin auto hoạt động
+                memeButton.style.marginLeft = 'auto';       // Căn giữa ngang
+                memeButton.style.marginRight = 'auto';      // Căn giữa ngang
+
+                feedbackDiv.insertAdjacentElement('afterend', memeButton);
+
+                memeButton.addEventListener('click', function() {
+                    const randomMeme = selectedMemeArr[Math.floor(Math.random() * selectedMemeArr.length)];
+                    memeContainer.innerHTML = `<img src="${randomMeme}" alt="Meme vui" loading="lazy" class="meme-img">`;
+                    memeContainer.style.display = 'block';
+                    memeButton.style.display = 'none';
+
+                    setTimeout(() => {
+                        const img = memeContainer.querySelector('img');
+                        if (img) img.style.opacity = '1';
+                    }, 100);
+                });
+            }
+			
+			// HIỆU ỨNG PHÁO HOA (Nếu điểm >= 8)
             if (diem >= 8) {
                 var duration = 3 * 1000;
                 var animationEnd = Date.now() + duration;
