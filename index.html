@@ -116,6 +116,135 @@
         overflow: hidden;    /* Ẩn phần tràn nếu có (an toàn) */
     }
 	
+	/* CSS cho Popup chuyên nghiệp */
+.custom-modal {
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0; 
+    width: 100%; height: 100%; 
+    background: rgba(0, 0, 0, 0.6); /* Làm tối nền */
+    backdrop-filter: blur(5px); /* Làm mờ nền sau */
+    z-index: 9999;
+    justify-content: center; 
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+/* 1. Sửa lại khung chứa nội dung */
+.modal-content {
+    background: white;
+    padding: 20px; /* Giảm padding một chút để tiết kiệm không gian */
+    border-radius: 20px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    
+    /* THÊM 3 DÒNG NÀY */
+    max-height: 75vh;    /* Giới hạn chiều cao tối đa bằng 85% màn hình */
+    display: flex;       /* Chuyển sang dạng flex để sắp xếp các phần bên trong */
+    flex-direction: column; 
+}
+
+.modal-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+/* 2. Sửa lại phần chứa chữ (phần này sẽ có thanh cuộn) */
+.modal-body {
+    text-align: left;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 20px;
+
+    /* THÊM 2 DÒNG NÀY */
+    overflow-y: auto;    /* Hiện thanh cuộn dọc khi nội dung quá dài */
+    padding-right: 10px; /* Tạo khoảng trống để thanh cuộn không đè lên chữ */
+}
+/* Tùy chỉnh thanh cuộn cho Popup */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: #52cca1; /* Màu xanh của bạn */
+    border-radius: 10px;
+}
+
+
+.btn-close {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-close:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+
+/* Hiệu ứng rung động cho popup đặc biệt */
+.special-border {
+    border: 3px solid #f1c40f;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* LOGO */
+.brand-logo-container {
+        text-align: center;        /* Căn giữa logo */
+        padding: 5px 0;           /* Khoảng cách trên dưới */
+        margin: 0 auto;            /* Đảm bảo căn giữa */
+    }
+
+    .brand-logo-link {
+        display: inline-block;     /* Giúp link ôm sát ảnh */
+        text-decoration: none;     /* Bỏ gạch chân link */
+    }
+
+	.brand-logo {
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        
+        /* Giới hạn tối đa 600px trên màn hình lớn */
+        max-width: 600px;
+        
+        /* Trên màn hình lớn, sẽ hiển thị tối đa 600px (không vượt quá) */
+        width: 100%;                   /* Chiếm full nếu nhỏ hơn 600px */
+    }
+
+    /* Responsive cho màn hình trung bình và nhỏ */
+    @media (max-width: 992px) {
+        .brand-logo {
+            max-width: 90%;            /* Vẫn giữ % để co giãn đẹp */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .brand-logo-container {
+            padding: 15px 0;
+        }
+        .brand-logo {
+            max-width: 95%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .brand-logo {
+            max-width: 100%;
+        }
+    }
+	
     </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -144,13 +273,64 @@
     <div id="loader" class="loader"></div>
     
 <div id="main-screen">
-        <h1 class="brand-title">TOÁN THẦY QUÂN</h1>
+<!-- LOGO -->
+<div class="brand-logo-container">
+    <img src="https://i.postimg.cc/RVDS2S58/TTQ4.jpg" 
+    alt="Toán Thầy Quân" 
+    class="brand-logo">
+</div>
         
         <p class="brand-subtitle" id="slogan-display">Chăm học Toán - Sáng tương lai</p>
         
         <input type="text" id="hs-name" placeholder="Họ và tên học sinh">
         <input type="text" id="exam-code" placeholder="Nhập Mã Đề Thi (Chú ý VIẾT HOA)">
         <button class="btn" onclick="vaoThi()">BẮT ĐẦU LÀM BÀI</button>
+		
+		<button class="btn" style="background-color: #4cd964; color: white;" onclick="xuLyBamNut(event)">
+    Hướng dẫn học tập
+		</button>
+		
+<div id="modal-huong-dan" class="custom-modal">
+    <div class="modal-content">
+        <div class="modal-header"><center>Hướng dẫn học tập</center></div>
+        <div class="modal-body">
+    <p>1. Trang web không hiển thị nội dung câu hỏi. Em hãy làm bài trên phiếu bài tập do Thầy/Cô phát, sau đó nhập đáp án tương ứng lên hệ thống.</p>
+    <p>2. Sau khi nộp bài, em sẽ xem được điểm số và biết câu nào đúng, câu nào sai. Hãy xem lại các câu sai, làm lại cẩn thận và tìm đáp án đúng. Học từ sai lầm là cách học rất hiệu quả.</p>
+    <p>3. Khi có câu sai, hệ thống sẽ hiển thị nút “Sửa sai – Grow your mind”. Hãy sử dụng nút này để nhập và kiểm tra lại kết quả của các câu sai trước đó.</p>
+    <p>4. Hãy nhập đầy đủ, chính xác tên của em trước khi làm bài. Đó là cách thể hiện sự trân trọng, yêu thương cái tên của chính mình.</p>
+
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+    <div style="color: #808080; font-size: 15px; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.5; font-style: italic;">
+        <p>
+            Phía trên là hướng dẫn học tập, còn để xem được 
+            Bí kíp học tập hãy làm như sau: Vào trang web này bằng điện thoại, bấm nhanh vào 
+            nút “Hướng dẫn học tập” nhiều hơn <strong>n</strong> lần. Khi đó bí kíp thực sự sẽ hiện ra.
+        </p>
+        
+        <div style="font-size: 13px; margin-top: 10px; border-left: 3px solid #52cca1; padding-left: 10px;">
+            Lưu ý:<br>
+            * Bấm thật nhanh để không hiện lại bảng hướng dẫn này.<br>
+            ** <strong>n</strong> là kết quả của phép tính:<br><center>[Tích hai số nguyên tố đầu tiên – (Năm hiện tại)^0]*2</center>
+        </div>
+    </div>
+</div>
+        <button class="btn-close" onclick="dongModal('modal-huong-dan')">Đã sẵn sàng</button>
+    </div>
+</div>
+
+<div id="modal-bi-mat" class="custom-modal">
+    <div class="modal-content special-border">
+        <div class="modal-header" style="color: #e74c3c;"><center>BÍ KÍP HỌC TẬP</center></div>
+        <div class="modal-body">
+            <p>Em đã tuân thủ đúng hướng dẫn, kiên trì bấm hơn 10 lần, nỗ lực bấm rất nhanh để đọc được bí kíp này!</p>
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXhoMmVsa2pmZjhwNWgwMmdoNTdhMHpqbXFzMGhnMmVwYjM5ejhzNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ox5i4KGCCx2OFbv7Aq/giphy.gif" alt="Secret Image" style="width:100%; border-radius:12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <p style="margin-top:10px; font-style: italic;">Chúc em có hành trình học tập thú vị và thành công!</p>
+			<p style="color: gray; font-style: italic;">Hãy giữ kín bí kíp này nhé.</p>
+        </div>
+        <button class="btn-close" onclick="dongModal('modal-bi-mat')">Tuyệt vời</button>
+    </div>
+</div>
+		
         <button class="btn btn-outline" onclick="showLoginAdmin()" style="font-size: 0.85em; padding: 8px;">Dành cho Giáo viên</button>
 
         <div class="footer-credit">Design by QuânPT</div>
@@ -172,7 +352,7 @@
         <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
 
         <h2>Tạo Đề Thi Mới</h2>
-        <input type="text" id="new-exam-code" placeholder="Mã đề (VD: TEST01)">
+        <input type="text" id="new-exam-code" placeholder="Mã đề (VIẾT HOA, không có dấu. Ví dụ: 12TOAN5)">
         <input type="text" id="new-exam-name" placeholder="Tên đề thi">
 
         <div class="config-group">
@@ -205,11 +385,18 @@
         </div>
 
         <div style="background: #e2e6ea; padding: 10px; margin: 10px 0; border-radius: 5px; font-size: 0.9em;">
-            <strong>Hướng dẫn:</strong> Nhập liên tiếp đáp án từ trên xuống dưới (Hết P1 -> P2 -> P3).
+            <strong>Hướng dẫn:<br> </strong> 
+             a) Tổng điểm các câu trong đề thi không bắt buộc phải bằng 10. Tuy nhiên, để sử dụng tốt các chức năng "Lời nhắc" dành cho học sinh và "Xem phổ điểm" thì nên để điểm tối đa bằng 10 (hoặc xấp xỉ 10).<br> 
+             b) Dùng dấu chấm (.) để viết số thập phân.<br>
+        	 c) Nhập liên tiếp đáp án từ trên xuống dưới (Hết P1 > P2 > P3). Ví dụ:<br>
+				1. A<br>
+				2. B<br>
+				3. ĐSĐS<br>
+				4. 5.25
         </div>
         <textarea id="exam-data-input" rows="8" placeholder="Dán đáp án vào đây..."></textarea>
         
-        <button class="btn" onclick="luuDeThi()">Lưu Đề Thi</button>
+        <button class="btn" onclick="luuDeThi(event)">Lưu Đề Thi</button>
         <button class="btn btn-outline" onclick="location.reload()">Thoát</button>
     </div>
 
@@ -222,7 +409,10 @@
     <div id="result-interface" class="hidden">
         <h2>KẾT QUẢ: <span id="score-display" style="color:red; font-size: 2em"></span></h2>
         <div id="result-details"></div>
-        <button class="btn" onclick="location.reload()">Làm đề khác</button>
+        <button id="btn-fix-mistakes" class="btn" style="background-color: #f39c12; margin-bottom: 10px; display: none;" onclick="cheDoSuaSai()">
+            Sửa sai - Grow Your Mind
+        </button>
+		<button class="btn" onclick="location.reload()">Làm đề khác</button>
     </div>
 </div>
 
@@ -410,6 +600,16 @@
             
             hideAll();
             document.getElementById('result-interface').style.display = 'block';
+			// --- ĐOẠN CODE MỚI THÊM: XỬ LÝ NÚT SỬA SAI ---
+            window.ketQuaChiTiet = res.chiTiet; // Lưu kết quả lại để dùng
+            // Nếu điểm < 10 (tức là có câu sai) thì hiện nút Sửa sai
+            if (res.diem < (currentExamConfig.p1_num * currentExamConfig.p1_score + currentExamConfig.p2_num * 1 + currentExamConfig.p3_num * currentExamConfig.p3_score)) { 
+                 document.getElementById('btn-fix-mistakes').style.display = 'block';
+            } else {
+                 document.getElementById('btn-fix-mistakes').style.display = 'none';
+            }
+            // ---------------------------------------------
+			
             document.getElementById('score-display').innerText = res.diem.toFixed(2);
             
             // --- PHẦN MỚI: HIỂN THỊ LỜI NHẮN ĐỘNG VIÊN ---
@@ -420,12 +620,12 @@
 
            // Ngân hàng lời nhắn
             const msgList = {
-                lv1: ["Vạn sự khởi đầu nan 🌱, đừng nản chí {ten} nhé! 💪", "Thất bại là mẹ thành công 🐣, cố lên {ten} ơi! 🚀", "Cần ôn kỹ lại lý thuyết nha {ten} 📚, em sẽ tiến bộ nhanh thôi! 💪", "Đừng buồn nhé {ten} 🤗, lần sau chắc chắn sẽ tốt hơn nhiều! 🌈", "Cố gắng hơn chút nữa nhé {ten} 💪, mỗi lần thử là một bước tiến rồi! 🏃"],
-                lv2: ["Đã có cố gắng 👍, nhưng cần tập trung hơn nha {ten} ⚡", "Cẩn thận hơn chút nữa nhé {ten} 📝, phong độ sẽ lên nhanh thôi 😉", "Cẩn thận hơn xíu nữa là điểm cao ngay thôi {ten} ơi 🎯", "Ôn luyện bài tập cơ bản nhiều hơn nhé {ten} 📚", "Tiếp tục nỗ lực nhé {ten} 💪, sắp chạm mốc Khá rồi 🌻"],
-                lv3: ["Kết quả khá đó 👏, phát huy và cố gắng lên nhé {ten}! 😉", "Nền tảng khá ổn rồi 👏, {ten} cố gắng luyện đề nhiều hơn nha 🔥", "Sắp giỏi rồi 🌟, cố thêm chút nữa nào {ten} 🚴", "Điểm này cho thấy {ten} đã nắm được kiến thức cơ bản 👍. Tiếp tục cố gắng nhé! 🌈", "Khá ổn đó {ten} 😎, lần sau mục tiêu 8+ nhé! 💪"],
-                lv4: ["Kết quả ổn đó 👏, chúc mừng {ten} vì sự tiến bộ này! 🎉", "Rất đáng khen 👏, {ten} giữ vững phong độ nhé 😉", "Điểm số đẹp 🌟, chúc mừng {ten}! Tiếp tục phát huy nhé! 🚀", "{ten} ơi, chỉ cần cẩn thận chút xíu nữa là chạm mốc cao hơn rồi! 🔥", "{ten} đang học rất hiệu quả 🔥, cố gắng giữ nhịp này nha! 😎"],
-                lv5: ["Một bài làm chất lượng cao 🌟, tiếp tục giữ phong độ nhé {ten}! 🚀", "Kiến thức của {ten} khá vững rồi 🌈, chúc mừng em! 👏", "Chỉ thiếu chút xíu nữa là điểm tuyệt đối rồi {ten} ơi 🤩", "Tuyệt vời ông mặt trời! 🌞 Chúc mừng {ten}! 👏", "Phong độ đỉnh chóp 👍, tiếp tục thế này nhé {ten}! 🌟"],
-                lv6: ["ĐỈNH CHÓP! 💯 {ten} là niềm tự hào của cả lớp! 😍", "Quá xịn rồi {ten} 🎉, đúng chuẩn học sinh gương mẫu! 👍", "Đỉnh của chóp! 👍 Chúc mừng {ten} nhé 🎉", "Kết quả rất ấn tượng 🤩, 10 điểm tròn trịa cho sự nỗ lực của {ten} 🎉", "Tuyệt vời ông mặt trời! 🌞 Chúc mừng {ten}! 🎉"]
+                lv1: ["Vạn sự khởi đầu nan 🌱, đừng nản chí {ten} nhé! 💪", "Thất bại là mẹ thành công 🐣, cố lên {ten} ơi! 🚀", "Cần ôn kỹ lại lý thuyết nha {ten} 📚, em sẽ tiến bộ nhanh thôi! 💪", "Đừng buồn nhé {ten} 🤗, lần sau chắc chắn sẽ tốt hơn nhiều! 🌈", "Cố gắng hơn chút nữa nhé {ten} 💪, mỗi lần thử là một bước tiến rồi! 🏃", "{ten} ơi, điểm lần này giống Einstein lúc nhỏ lắm 😄, ông ấy từng bị cho là “chậm hiểu” mà sau thay đổi cả thế giới! Cố lên nhé!️", "Nobita cũng hay được điểm kiểu này nè {ten} à 😂, nhưng cậu ấy vẫn có bạn bè và thầy cô giúp, em cũng thế. Cố lên nhé!️💪"],
+                lv2: ["Đã có cố gắng 👍, nhưng cần tập trung hơn nha {ten} ⚡", "Cẩn thận hơn chút nữa nhé {ten} 📝, phong độ sẽ lên nhanh thôi 😉", "Cẩn thận hơn xíu nữa là điểm cao ngay thôi {ten} ơi 🎯", "Ôn luyện bài tập cơ bản nhiều hơn nhé {ten} 📚", "Tiếp tục nỗ lực nhé {ten} 💪, sắp chạm mốc Khá rồi 🌻", "{ten} ơi, điểm lần này giống Einstein lúc nhỏ lắm 😄, ông ấy từng bị cho là “chậm hiểu” mà sau thay đổi cả thế giới! Cố lên nhé!️", "Nobita cũng hay được điểm kiểu này nè {ten} à 😂, nhưng cậu ấy vẫn có bạn bè và thầy cô giúp, em cũng thế. Cố lên nhé!️ 💪"],
+                lv3: ["Kết quả khá đó 👏, phát huy và cố gắng lên nhé {ten}! 😉", "Nền tảng khá ổn rồi 👏, {ten} cố gắng luyện đề nhiều hơn nha 🔥", "Sắp giỏi rồi 🌟, cố thêm chút nữa nào {ten} 🚴", "Điểm này cho thấy {ten} đã nắm được kiến thức cơ bản 👍. Tiếp tục cố gắng nhé! 🌈", "Khá ổn đó {ten} 😎, lần sau mục tiêu 8+ nhé! 💪", "{ten} à, Steve Jobs thời cấp ba cũng chỉ ở mức này 🙌, rồi tạo ra 🍎 Apple thay đổi thế giới! Cố lên nhé!️", "{ten} ơi, J.K. Rowling từng bị từ chối nhiều lần 😊, nhưng vẫn viết nên 📚 Harry Potter bán hàng tỷ cuốn! Cố lên nhé!️"],
+                lv4: ["Kết quả ổn đó 👏, chúc mừng {ten} vì sự tiến bộ này! 🎉", "Rất đáng khen 👏, {ten} giữ vững phong độ nhé 😉", "Điểm số đẹp 🌟, chúc mừng {ten}! Tiếp tục phát huy nhé! 🚀", "{ten} ơi, chỉ cần cẩn thận chút xíu nữa là chạm mốc cao hơn rồi! 🔥", "{ten} đang học rất hiệu quả 🔥, cố gắng giữ nhịp này nha! 😎", "Giống Albert Einstein thời trung học lắm {ten} à 👓, ông ấy học khá thôi nhưng thành huyền thoại rồi! Cố lên nhé!️", "{ten} ơi, điểm cao giống Leonardo da Vinci thời trẻ luôn á 🎨 Cố lên nhé!️"],
+                lv5: ["Một bài làm chất lượng cao 🌟, tiếp tục giữ phong độ nhé {ten}! 🚀", "Kiến thức của {ten} khá vững rồi 🌈, chúc mừng em! 👏", "Chỉ thiếu chút xíu nữa là điểm tuyệt đối rồi {ten} ơi 🤩", "Tuyệt vời ông mặt trời! 🌞 Chúc mừng {ten}! 👏", "Phong độ đỉnh chóp 👍, tiếp tục thế này nhé {ten}! 🌟", "Điểm đẹp như thời Stephen Hawking học đại học {ten} ơi 🌠, ông ấy giỏi và truyền cảm hứng cho cả thế giới!", "{ten} à, Marie Curie cũng ở mức này trước khi đoạt Nobel 🙆‍️, tiếp tục phát huy nhé! 🏆"],
+                lv6: ["ĐỈNH CHÓP! 💯 {ten} là niềm tự hào của cả lớp! 😍", "Quá xịn rồi {ten} 🎉, đúng chuẩn học sinh gương mẫu! 👍", "Đỉnh của chóp! 👍 Chúc mừng {ten} nhé 🎉", "Kết quả rất ấn tượng 🤩, 10 điểm tròn trịa cho sự nỗ lực của {ten} 🎉", "Tuyệt vời ông mặt trời! 🌞 Chúc mừng {ten}! 🎉", "Điểm cao đúng chuẩn “Elon Musk thời đi học” luôn 🚀, hãy tiếp tục chinh phục vũ trụ kiến thức {ten} nhé! 🌌", "Mức điểm này như của Bill Gates sáng lập Microsoft {ten} ơi 💰, tiếp tục phát huy nhé! ✨"]
             };
 
             // Chọn nhóm lời nhắn
@@ -462,8 +662,10 @@
                    "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycDdtZnN6eDI4bWpyanU5MjIxNWh2enNwaXdzaHAzZG1iaW9qa2d4NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2uh5yKKmZjDFUy2DOM/giphy.gif",
                    "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyNDdxZnhiamQ1Mm9ycmFuMmNnMG5pZ2xnbHlpemU5NDlmeTl2bm10aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tBWTS5iya1Nkh1uiB9/giphy.gif",
                    "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyZ2diOW9rOGtyODFlaXdueDI0N2E5dnU1YzkzczJjcGdydnViNGoxcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jJ2zMk9eXoht2VFxEV/giphy.gif",
+				   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyZ2kzcTU1OWVvdTNibmVkbzcyOHpybWI1Y2pzcHJqdzBxenphOW1vYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1hXY6iNdTFpTW4je85/giphy.gif",
                    "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyempoMDdxNzVhOW9wZjBjNXpqbTY4NTc4eXoweThyYWwzdmd1cmRrZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6XX4V0O8a0xdS/giphy.gif",
-		   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyOHl3b251ZmtuODBnNWJqajQ5anNoOGNmbHhreTFrajZpYTNzM3BqcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6nUQzWnaMz1cDrmo/giphy.gif"
+				   "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2Z5MTFyZHVwOXFubGM5c2N6bjdoYng4cjd3YnAzcGY2Yzg5bnVvbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NgTGoJN7UejpeA8Zby/giphy.gif",
+				   "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyOHl3b251ZmtuODBnNWJqajQ5anNoOGNmbHhreTFrajZpYTNzM3BqcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6nUQzWnaMz1cDrmo/giphy.gif"
                 ],
                 lv3: [ // 6-7 điểm: khá tốt, cố thêm chút
                    "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyanhxbzBja3Zjb3V3em9mM3NzdjhobWFoYnV0MXJlejl4OGpkanc2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IQHTtgvQyHuEi5Epkq/giphy.gif",
@@ -471,8 +673,10 @@
                    "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyOHl3b251ZmtuODBnNWJqajQ5anNoOGNmbHhreTFrajZpYTNzM3BqcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6nUQzWnaMz1cDrmo/giphy.gif",
                    "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyMm9uYmVwdmMwbTQyZmNud3EyYmpnNTZ3MnJjdG4yb2RjcXBmZGF1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Xq3vAx5aX0gaifRAsk/giphy.gif",
                    "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyNDdxZnhiamQ1Mm9ycmFuMmNnMG5pZ2xnbHlpemU5NDlmeTl2bm10aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tBWTS5iya1Nkh1uiB9/giphy.gif",
+				   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyZ2kzcTU1OWVvdTNibmVkbzcyOHpybWI1Y2pzcHJqdzBxenphOW1vYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1hXY6iNdTFpTW4je85/giphy.gif",
                    "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyempoMDdxNzVhOW9wZjBjNXpqbTY4NTc4eXoweThyYWwzdmd1cmRrZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6XX4V0O8a0xdS/giphy.gif",
                    "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyMmkzczBldDl4ZXFrcXo3cWM0aHdkdzV4eWlid204cmxuazNjdHgxZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUA7b1otxlfgvqZGJq/giphy.gif",
+				   "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2Z5MTFyZHVwOXFubGM5c2N6bjdoYng4cjd3YnAzcGY2Yzg5bnVvbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NgTGoJN7UejpeA8Zby/giphy.gif",
                    "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyZ2diOW9rOGtyODFlaXdueDI0N2E5dnU1YzkzczJjcGdydnViNGoxcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jJ2zMk9eXoht2VFxEV/giphy.gif",
                    "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyOTdsZXF1c291eW1qczF6OW9nbGxteXEzbXExejcyNnJjN3plZzFkeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FemTGpEZeK27M5fKL4/giphy.gif",
                    "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyMThpZjIydHprZTAwZ3J2NXJ3YWZ3MGdka3ZuMDdmemlqNTkzOTdkayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUn3C8WqEzUEeQoRa0/giphy.gif",
@@ -508,7 +712,8 @@
                    "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyMmkzczBldDl4ZXFrcXo3cWM0aHdkdzV4eWlid204cmxuazNjdHgxZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUA7b1otxlfgvqZGJq/giphy.gif",
                    "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyaW4xZTRoMnB1aTdxYWhuamhnbW1taGF1NGVpdWIybG5yM2JldXEzbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AWTJeBx5MiEoEqDFIr/giphy.gif",
                    "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUybzV1MHB2Nm5uY2c5bXExc3N6MWZiaGRzb28weXo1a3F0eHoya2NweCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YJ09hqJCLme4g/giphy.gif",
-"https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXE3cWF6Mm91dTRnaHRwa3RlZ2Jwa3czcms1YTdsYjBxOWpvc3M2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tIeCLkB8geYtW/giphy.gif",
+				   "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXE3cWF6Mm91dTRnaHRwa3RlZ2Jwa3czcms1YTdsYjBxOWpvc3M2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tIeCLkB8geYtW/giphy.gif",
+				   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyZzA3eW4zam9nMDNnOHo2cDNxOWtwcno5MXlhemZjanljNDZjd2dlcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hflpSaYuR8xK8/giphy.gif",
                    "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyMnk4NnAwc2JnZGNkd3F4NmV0eDIyYTYwZWY4eXdzb3NwMzVtMnl5aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUjSOWCndCdECCyOEY/giphy.gif",
                    "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnE2c2x5OGpoam5wMHMzbGh0bHNuZTY1eHc2ajVqZTIzOXhsNnEzeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qAmdxxyQ4XTt3KGt3c/giphy.gif"
                 ],
@@ -523,6 +728,7 @@
                    "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXV0c3VwendhMmJ5ajZpcDV0MHY5ZWUyYW5qMHM0a3V3N2w4cm1rMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tnMUXTkYUWKe1dasNJ/giphy.gif",
                    "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyb28xOGprZmJxeG5rYjV2dzV5bGVpZTEyZ2VlMzVkMnYyeXM1N3VrbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7absbD7PbTFQa0c8/giphy.gif",
                    "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyeTNiMnNpejlkOG9qNzV0Z3Q2azZ0bjdiZjIzbG9naDdpd3dqeW1xYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Q66ZEIpjEQddUOOKGW/giphy.gif",
+				   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyZzA3eW4zam9nMDNnOHo2cDNxOWtwcno5MXlhemZjanljNDZjd2dlcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hflpSaYuR8xK8/giphy.gif",
                    "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyMjBxb2pvcHhqdHE0bHN5dzJxbm83Nnljcm05cTF2OWc1b3E1cWM1NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/x0yxQpWV9gPMRHnw7u/giphy.gif",
                    "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyaW4xZTRoMnB1aTdxYWhuamhnbW1taGF1NGVpdWIybG5yM2JldXEzbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AWTJeBx5MiEoEqDFIr/giphy.gif",
                    "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUybnc5NWwxYTNzc2Y4bnNrbm8xanp4MDdwZm1sY3BnMDB2NmF5NTc5ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BWD3CtcudWL28/giphy.gif",
@@ -637,6 +843,7 @@
                 html += `</div>`;
             });
             document.getElementById('result-details').innerHTML = html;
+			window.scrollTo(0, 0);
 
         } catch(e) { 
             alert("Lỗi nộp bài! Vui lòng kiểm tra mạng."); 
@@ -662,55 +869,291 @@
         else { alert(res.msg); }
     }
 
-    async function luuDeThi() {
-        const ma = document.getElementById('new-exam-code').value.trim();
-        const ten = document.getElementById('new-exam-name').value.trim();
-        const cfg = {
-            p1_num: parseInt(document.getElementById('cfg-p1-num').value) || 0,
-            p1_score: parseFloat(document.getElementById('cfg-p1-score').value) || 0,
-            p2_num: parseInt(document.getElementById('cfg-p2-num').value) || 0,
-            p2_mode: document.getElementById('cfg-p2-mode').value,
-            p3_num: parseInt(document.getElementById('cfg-p3-num').value) || 0,
-            p3_score: parseFloat(document.getElementById('cfg-p3-score').value) || 0
-        };
-        const raw = document.getElementById('exam-data-input').value;
-        if(!ma || !ten || !raw) return alert("Vui lòng nhập đủ thông tin!");
+    async function luuDeThi(event) {
+    // 1. LẤY ĐỐI TƯỢNG NÚT VÀ LƯU TRẠNG THÁI CŨ
+    const btn = event.target; 
+    const originalText = btn.innerHTML;
 
-        let lines = raw.split('\n').filter(l => l.trim() !== "");
-        let dapAn = [];
-        let totalQ = cfg.p1_num + cfg.p2_num + cfg.p3_num;
-        let currentLine = 0;
-        
-        function parseLine(line) { let dot = line.indexOf('.'); return dot === -1 ? line.trim() : line.substring(dot+1).trim(); }
+    // 2. THU THẬP DỮ LIỆU (Giữ nguyên logic của bạn)
+    const ma = document.getElementById('new-exam-code').value.trim();
+    const ten = document.getElementById('new-exam-name').value.trim();
+    const cfg = {
+        p1_num: parseInt(document.getElementById('cfg-p1-num').value) || 0,
+        p1_score: parseFloat(document.getElementById('cfg-p1-score').value) || 0,
+        p2_num: parseInt(document.getElementById('cfg-p2-num').value) || 0,
+        p2_mode: document.getElementById('cfg-p2-mode').value,
+        p3_num: parseInt(document.getElementById('cfg-p3-num').value) || 0,
+        p3_score: parseFloat(document.getElementById('cfg-p3-score').value) || 0
+    };
+    const raw = document.getElementById('exam-data-input').value;
 
-        for(let i=0; i<cfg.p1_num; i++) {
-            if(currentLine >= lines.length) break;
-            dapAn.push({id: i+1, dang: 1, dapAn: parseLine(lines[currentLine++]).toUpperCase()});
-        }
-        for(let i=0; i<cfg.p2_num; i++) {
-            if(currentLine >= lines.length) break;
-            let arr = parseLine(lines[currentLine++]).split('').map(c => c.toUpperCase() === 'Đ');
-            dapAn.push({id: dapAn.length+1, dang: 2, dapAn: arr, soY: 4});
-        }
-        for(let i=0; i<cfg.p3_num; i++) {
-            if(currentLine >= lines.length) break;
-            dapAn.push({id: dapAn.length+1, dang: 3, dapAn: parseFloat(parseLine(lines[currentLine++]).replace(',', '.'))});
-        }
+    // Kiểm tra đầu vào
+    if(!ma || !ten || !raw) return alert("Vui lòng nhập đủ thông tin!");
 
-        if (dapAn.length !== totalQ) {
-            if(!confirm(`Cấu hình ${totalQ} câu nhưng đọc được ${dapAn.length} dòng. Lưu không?`)) return;
-        }
-
-        const payload = { maDe: ma, tenDe: ten, dapAn: dapAn, config: cfg };
-        const formData = new FormData();
-        formData.append('action', 'save_exam');
-        formData.append('data', JSON.stringify(payload));
-        
-        showLoader(true);
-        await fetch(API_URL, { method: 'POST', body: formData });
-        alert("Lưu thành công!");
-        showLoader(false);
+    // Xử lý tách dòng đáp án
+    let lines = raw.split('\n').filter(l => l.trim() !== "");
+    let dapAn = [];
+    let totalQ = cfg.p1_num + cfg.p2_num + cfg.p3_num;
+    let currentLine = 0;
+    
+    function parseLine(line) { 
+        let dot = line.indexOf('.'); 
+        return dot === -1 ? line.trim() : line.substring(dot+1).trim(); 
     }
+
+    for(let i=0; i<cfg.p1_num; i++) {
+        if(currentLine >= lines.length) break;
+        dapAn.push({id: i+1, dang: 1, dapAn: parseLine(lines[currentLine++]).toUpperCase()});
+    }
+    for(let i=0; i<cfg.p2_num; i++) {
+        if(currentLine >= lines.length) break;
+        let arr = parseLine(lines[currentLine++]).split('').map(c => c.toUpperCase() === 'Đ');
+        dapAn.push({id: dapAn.length+1, dang: 2, dapAn: arr, soY: 4});
+    }
+    for(let i=0; i<cfg.p3_num; i++) {
+        if(currentLine >= lines.length) break;
+        dapAn.push({id: dapAn.length+1, dang: 3, dapAn: parseFloat(parseLine(lines[currentLine++]).replace(',', '.'))});
+    }
+
+    if (dapAn.length !== totalQ) {
+        if(!confirm(`Cấu hình ${totalQ} câu nhưng đọc được ${dapAn.length} dòng. Lưu không?`)) return;
+    }
+
+    // 3. BẮT ĐẦU QUÁ TRÌNH GỬI DỮ LIỆU
+    const payload = { maDe: ma, tenDe: ten, dapAn: dapAn, config: cfg };
+    const formData = new FormData();
+    formData.append('action', 'save_exam');
+    formData.append('data', JSON.stringify(payload));
+
+    // ĐỔI GIAO DIỆN NÚT THÀNH LOADING (Thay cho showLoader hệ thống)
+    btn.disabled = true;
+    btn.innerHTML = '<div class="btn-loader"></div> Đang lưu...';
+
+    try {
+        const response = await fetch(API_URL, { method: 'POST', body: formData });
+        const result = await response.json(); // Giả sử API trả về JSON
+
+        if(result.status === 'success' || response.ok) {
+            alert("Lưu thành công! Bạn có thể tắt trang hoặc tạo đề khác.!");
+        } else {
+            alert("Có lỗi xảy ra: " + (result.msg || "Không xác định"));
+        }
+    } catch(e) {
+        console.error(e);
+        alert("Lỗi kết nối mạng hoặc máy chủ!");
+    } finally {
+        // 4. TRẢ LẠI NÚT TRẠNG THÁI BAN ĐẦU (Dù thành công hay thất bại)
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+}
+
+// --- CẤU HÌNH SỬA SAI ---
+    const MAX_LAN_THU = 2; // Thầy đổi số này nếu muốn tăng/giảm số lượt
+    let soLanDaThu = 0;    // Biến đếm số lần đã bấm
+
+    function cheDoSuaSai() {
+        // 1. Chuyển đổi giao diện
+        document.getElementById('result-interface').style.display = 'none';
+        document.getElementById('exam-interface').style.display = 'block';
+        document.getElementById('questions-container').style.display = 'block';
+
+        // 2. THÊM ĐOẠN TIN NHẮN ĐỘNG VIÊN (Yêu cầu 1)
+        // Kiểm tra nếu chưa có thì mới tạo, tránh tạo trùng lặp
+        if (!document.getElementById('msg-dong-vien')) {
+            const msgDiv = document.createElement('div');
+            msgDiv.id = 'msg-dong-vien';
+            msgDiv.style.cssText = `
+                background-color: #e8f5e9; 
+                border: 1px solid #4caf50; 
+                color: #2e7d32;
+                padding: 15px; 
+                margin: 15px auto; 
+                border-radius: 8px; 
+                text-align: center; 
+                max-width: 90%;
+                font-family: Arial, sans-serif;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            `;
+            
+            msgDiv.innerHTML = `
+                <div style="font-size: 0.98em; margin-bottom: 8px;">
+                    Mỗi câu trả lời chưa đúng là một cơ hội để em hiểu rõ vấn đề. 
+                    Đừng sợ sai, quan trọng là học được gì từ lỗi sai đó để vững vàng hơn.
+                </div>
+                <div style="font-size: 0.95em; color: #555;">
+                    Hãy làm lại các câu ở dưới và nhấn "Kiểm tra lại" - em có 2 lần nhấn. 
+                    Lưu ý: Điểm số đã lưu trước đó không thay đổi.
+                </div>
+            `;
+
+            // Chèn vào ngay dưới Tiêu đề đề thi (thẻ h2 đầu tiên trong exam-interface)
+            const header = document.querySelector('#exam-interface h2');
+            header.parentNode.insertBefore(msgDiv, header.nextSibling);
+        } else {
+            // Nếu có rồi thì hiện nó lên (phòng trường hợp bị ẩn)
+            document.getElementById('msg-dong-vien').style.display = 'block';
+        }
+
+        // 3. Reset trạng thái
+        soLanDaThu = 0; 
+        
+        // 4. Lọc câu sai để hiển thị
+        const questionDivs = document.querySelectorAll('.question-box');
+        let countSai = 0;
+
+        questionDivs.forEach((div, index) => {
+            // Reset màu sắc cũ (nếu có)
+            div.style.border = "1px solid #ccc"; 
+            div.style.backgroundColor = "#fff";
+
+            let dataCau = window.ketQuaChiTiet[index];
+            let isWrong = false;
+
+            // Logic xác định câu sai
+            if (Array.isArray(dataCau.ketQua)) {
+                if (dataCau.ketQua.includes(false)) isWrong = true;
+            } else {
+                if (dataCau.diem == 0) isWrong = true;
+            }
+
+            if (isWrong) {
+                div.style.display = 'block'; 
+                div.style.borderLeft = '5px solid #f39c12'; // Đánh dấu nhẹ câu cần sửa
+                countSai++;
+            } else {
+                div.style.display = 'none';
+            }
+        });
+
+        // 5. Cập nhật nút bấm
+        const btnSubmit = document.querySelector('#exam-interface .btn');
+        // Thay thế nút cũ bằng nút mới để xóa sạch các sự kiện cũ
+        let newBtn = btnSubmit.cloneNode(true);
+        btnSubmit.parentNode.replaceChild(newBtn, btnSubmit);
+        
+        newBtn.id = "btn-check-again"; // Đặt ID để dễ gọi
+        newBtn.innerHTML = `KIỂM TRA LẠI (Còn ${MAX_LAN_THU} lượt)`;
+        newBtn.style.background = "#f39c12"; 
+        newBtn.disabled = false;
+        newBtn.onclick = chamDiemTaiCho; 
+
+        window.scrollTo(0, 0);
+    }
+
+    function chamDiemTaiCho() {
+        const btn = document.getElementById('btn-check-again');
+        
+        // --- LOGIC GIỚI HẠN SỐ LẦN (Yêu cầu 2) ---
+        soLanDaThu++;
+        let conLai = MAX_LAN_THU - soLanDaThu;
+
+        let countDung = 0;
+        let totalSai = 0;
+        
+        const questionDivs = document.querySelectorAll('.question-box');
+
+        // Logic chấm điểm (giữ nguyên logic cũ)
+        window.ketQuaChiTiet.forEach((dataCau, i) => {
+            const div = questionDivs[i];
+            if (div.style.display === 'none') return; 
+
+            totalSai++;
+            let isCorrectNow = false;
+            let dapAnDung = dataCau.dapAn;
+            let userVal;
+            
+            // Dạng 1: Trắc nghiệm
+            if (typeof dapAnDung === 'string' && dapAnDung.length === 1) {
+                const el = document.querySelector(`input[name="c${i}"]:checked`);
+                userVal = el ? el.value : "";
+                if (userVal === dapAnDung) isCorrectNow = true;
+            }
+            // Dạng 2: Đúng Sai
+            else if (Array.isArray(dapAnDung)) {
+                let checkArr = [];
+                for(let j=0; j<4; j++) {
+                    const el = document.querySelector(`input[name="c${i}_${j}"]:checked`);
+                    let val = el ? (el.value === 'true') : null;
+                    checkArr.push(val === dapAnDung[j]);
+                }
+                if (!checkArr.includes(false)) isCorrectNow = true;
+            }
+            // Dạng 3: Điền số
+            else {
+                let el = document.getElementById(`c${i}`);
+                userVal = parseFloat(el.value.replace(',', '.'));
+                let valDung = parseFloat(dapAnDung);
+                if (!isNaN(userVal) && Math.abs(userVal - valDung) < 0.0001) isCorrectNow = true;
+            }
+
+            if (isCorrectNow) {
+                div.style.border = "2px solid green";
+                div.style.backgroundColor = "#f0fff4";
+                countDung++;
+            } else {
+                div.style.border = "2px solid red";
+                div.style.backgroundColor = "#fff5f5";
+            }
+        });
+
+        // --- XỬ LÝ KẾT QUẢ SAU KHI CHẤM ---
+        if (countDung === totalSai) {
+            // Trường hợp 1: Sửa đúng hết
+            btn.innerHTML = "🎉 HOÀN THÀNH XUẤT SẮC!";
+            btn.style.background = "#28a745";
+            btn.disabled = true;
+            alert("TUYỆT VỜI! Em đã hiểu bài hơn rồi đấy.");
+            
+            //setTimeout(() => {
+            //    if(confirm("Hãy cố gắng và cẩn thận hơn ở những bài sau nhé!")) location.reload();
+            //}, 1000);
+
+        } else {
+            // Trường hợp 2: Vẫn còn sai
+            if (conLai > 0) {
+                // Vẫn còn lượt
+                btn.innerHTML = `KIỂM TRA LẠI (Còn ${conLai} lượt)`;
+                alert(`Em đã sửa đúng ${countDung}/${totalSai} câu.\nVẫn còn câu sai (viền đỏ), hãy cố gắng suy nghĩ thêm nhé!`);
+            } else {
+                // Hết lượt
+                btn.innerHTML = "ĐÃ HẾT LƯỢT KIỂM TRA";
+                btn.style.background = "#7f8c8d"; // Màu xám
+                btn.disabled = true;
+                alert("Rất tiếc, em đã hết lượt kiểm tra lại.\nHãy xem lại sách vở hoặc hỏi thầy cô để được giải đáp nhé!");
+            }
+        }
+    }
+
+let clickCount = 0;
+let clickTimer;
+
+function xuLyBamNut(event) {
+    clickCount++;
+    
+    // Xóa bộ đếm thời gian reset nếu đang bấm tiếp
+    clearTimeout(clickTimer);
+    
+    // Nếu ngừng bấm quá 800ms thì mới bắt đầu kiểm tra kết quả
+    clickTimer = setTimeout(() => {
+        if (clickCount === 1) {
+            moModal('modal-huong-dan');
+        } else if (clickCount >= 10) {
+            moModal('modal-bi-mat');
+        }
+        clickCount = 0; // Reset sau khi thực hiện xong
+    }, 300); // 300ms là khoảng chờ đủ nhanh để biết họ bấm 1 hay nhiều lần
+}
+
+function moModal(id) {
+    document.getElementById(id).style.display = 'flex';
+}
+
+function dongModal(id) {
+    document.getElementById(id).style.display = 'none';
+}
+
+
 </script>
 
 </body>
