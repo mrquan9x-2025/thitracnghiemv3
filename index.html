@@ -284,7 +284,7 @@
         
         <input type="text" id="hs-name" placeholder="Họ và tên học sinh">
         <input type="text" id="exam-code" placeholder="Nhập Mã Đề Thi (Chú ý VIẾT HOA)">
-        <button class="btn" onclick="vaoThi()">BẮT ĐẦU LÀM BÀI</button>
+        <button class="btn" onclick="vaoThi(event)">BẮT ĐẦU LÀM BÀI</button>
 		
 		<button class="btn" style="background-color: #4cd964; color: white;" onclick="xuLyBamNut(event)">
     Hướng dẫn học tập
@@ -482,50 +482,66 @@
         document.getElementById('result-interface').style.display = 'none';
     }
 
-    async function vaoThi() {
-         // --- CẬP NHẬT: XỬ LÝ HỌ TÊN THÔNG MINH ---
-        const nameInput = document.getElementById('hs-name');
-        let rawName = nameInput.value;
-        
-        // Bước 1: Chuẩn hóa (Tự động viết hoa chữ cái đầu)
-        let cleanName = chuanHoaTen(rawName);
-        
-        // Bước 2: Kiểm tra độ dài (Phải có ít nhất 2 từ)
-        if (!cleanName || cleanName.split(' ').length < 2) {
-            alert("Vui lòng nhập đầy đủ Họ và Tên (Ví dụ: Nguyễn Văn An)");
-            nameInput.focus();
-            return;
-        }
+    async function vaoThi(event) {
+    // 1. LẤY ĐỐI TƯỢNG NÚT VÀ LƯU TRẠNG THÁI CŨ
+    const btn = event.target; 
+    const originalText = btn.innerHTML;
 
-        // Bước 3: Gán lại tên đã chuẩn hóa vào ô input để học sinh nhìn thấy
-        nameInput.value = cleanName;
-        studentName = cleanName; // Lưu vào biến toàn cục
-        // ------------------------------------------
-
-        const code = document.getElementById('exam-code').value.trim();
-        examCode = code; // Lưu mã đề
-
-        if (!studentName || !examCode) {
-            alert("Vui lòng nhập đủ Họ Tên và Mã đề!");
-            return;
-        }
-
-
-        showLoader(true);
-        try {
-            const res = await fetch(`${API_URL}?action=get_exam&maDe=${examCode}&t=${Date.now()}`).then(r => r.json());
-            if(res.status === 'error') { alert(res.msg); showLoader(false); return; }
-            
-            hideAll();
-            document.getElementById('exam-interface').style.display = 'block';
-            document.getElementById('exam-title-display').innerText = res.data.tenDe;
-            
-            currentExamConfig = res.data.config;
-            currentExamQuestions = res.data.cauHoi;
-            renderQuestions(res.data.cauHoi, res.data.config);
-        } catch(e) { console.error(e); alert("Lỗi kết nối!"); }
-        showLoader(false);
+    // --- XỬ LÝ HỌ TÊN THÔNG MINH ---
+    const nameInput = document.getElementById('hs-name');
+    let rawName = nameInput.value;
+    
+    let cleanName = chuanHoaTen(rawName);
+    
+    if (!cleanName || cleanName.split(' ').length < 2) {
+        alert("Vui lòng nhập đầy đủ Họ và Tên (Ví dụ: Nguyễn Văn An)");
+        nameInput.focus();
+        return;
     }
+
+    nameInput.value = cleanName;
+    studentName = cleanName; 
+
+    const code = document.getElementById('exam-code').value.trim();
+    examCode = code; 
+
+    if (!studentName || !examCode) {
+        alert("Vui lòng nhập đủ Họ Tên và Mã đề!");
+        return;
+    }
+
+    // 2. ĐỔI GIAO DIỆN NÚT THÀNH LOADING
+    btn.disabled = true;
+    // Sử dụng class btn-loader mà bạn đã có sẵn trong CSS
+    btn.innerHTML = '<div class="btn-loader"></div> Đang tải đề...';
+
+    // Bỏ showLoader(true) cũ vì đã có loading tại nút
+    try {
+        const res = await fetch(`${API_URL}?action=get_exam&maDe=${examCode}&t=${Date.now()}`).then(r => r.json());
+        
+        if(res.status === 'error') { 
+            alert(res.msg); 
+            return; 
+        }
+        
+        hideAll();
+        document.getElementById('exam-interface').style.display = 'block';
+        document.getElementById('exam-title-display').innerText = res.data.tenDe;
+        
+        currentExamConfig = res.data.config;
+        currentExamQuestions = res.data.cauHoi;
+        renderQuestions(res.data.cauHoi, res.data.config);
+
+    } catch(e) { 
+        console.error(e); 
+        alert("Lỗi kết nối hoặc không tìm thấy đề!"); 
+    } finally {
+        // 3. TRẢ LẠI TRẠNG THÁI NÚT BAN ĐẦU
+        // Lệnh trong finally luôn chạy kể cả khi fetch thành công hay thất bại
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+}
 
     function renderQuestions(list, config) {
         let html = '';
@@ -1183,4 +1199,3 @@ function dongModal(id) {
 
 </body>
 </html>
-
