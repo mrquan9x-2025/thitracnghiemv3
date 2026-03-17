@@ -60,8 +60,8 @@
         
         .hidden { display: none; }
 
-	/* Spinner nhỏ nằm trong nút bấm */
-	.btn-loader {
+		/* Spinner nhỏ nằm trong nút bấm */
+		.btn-loader {
     		border: 3px solid rgba(255,255,255,0.3);
     		border-top: 3px solid white;
     		border-radius: 50%;
@@ -71,16 +71,16 @@
     		display: inline-block;
     		vertical-align: middle;
     		margin-right: 10px;
-	}
-	/* Trạng thái nút khi đang xử lý */
+		}
+		/* Trạng thái nút khi đang xử lý */
 		.btn:disabled {
     		background-color: #95a5a6; /* Màu xám */
     		cursor: not-allowed;
     		opacity: 0.8;
-	}
+		}
 
-	/* Thêm vào trong thẻ <style> */
-	.footer-credit {
+		/* Thêm vào trong thẻ <style> */
+		.footer-credit {
     		margin-top: 40px;
     		font-size: 12px;
     		color: #999;
@@ -88,17 +88,17 @@
     		border-top: 1px solid #eee;
     		padding-top: 15px;
     		font-family: monospace; /* Font chữ kiểu code cho ngầu */
-	}
-/*Đoạn này của meme*/
-	/* Nút hover đẹp hơn */
-    #meme-button:hover {
+			}
+		/*Đoạn này của meme*/
+		/* Nút hover đẹp hơn */
+		#meme-button:hover {
         background: #2dd8bc;  /* Tối hơn chút khi hover */
         transform: translateY(-2px);
         transition: all 0.3s ease;
-    }
+		}
 
-    /* Meme responsive hoàn hảo trên mọi thiết bị, đặc biệt mobile */
-    .meme-img {
+		/* Meme responsive hoàn hảo trên mọi thiết bị, đặc biệt mobile */
+		.meme-img {
         max-width: 100%;     /* Không vượt quá chiều rộng màn hình/container */
         max-height: 300px;   /* Giữ chiều cao tối đa */
         height: auto;        /* Tự điều chỉnh tỷ lệ */
@@ -109,68 +109,68 @@
         transition: opacity 0.6s ease;
         display: block;      /* Tránh lỗi inline spacing */
         margin: 0 auto;      /* Căn giữa chính xác */
-    }
+		}
 
-    /* Đảm bảo không tràn khung nếu có vấn đề overflow */
-    #meme-container {
+		/* Đảm bảo không tràn khung nếu có vấn đề overflow */
+		#meme-container {
         overflow: hidden;    /* Ẩn phần tràn nếu có (an toàn) */
-    }
+		}
 	
-	/* CSS cho Popup chuyên nghiệp */
-.custom-modal {
-    display: none; 
-    position: fixed; 
-    top: 0; left: 0; 
-    width: 100%; height: 100%; 
-    background: rgba(0, 0, 0, 0.6); /* Làm tối nền */
-    backdrop-filter: blur(5px); /* Làm mờ nền sau */
-    z-index: 9999;
-    justify-content: center; 
-    align-items: center;
-    animation: fadeIn 0.3s ease;
-}
+		/* CSS cho Popup chuyên nghiệp */
+		.custom-modal {
+		display: none; 
+		position: fixed; 
+		top: 0; left: 0; 
+		width: 100%; height: 100%; 
+		background: rgba(0, 0, 0, 0.6); /* Làm tối nền */
+		backdrop-filter: blur(5px); /* Làm mờ nền sau */
+		z-index: 9999;
+		justify-content: center; 
+		align-items: center;
+		animation: fadeIn 0.3s ease;
+		}
 
-/* 1. Sửa lại khung chứa nội dung */
-.modal-content {
-    background: white;
-    padding: 20px; /* Giảm padding một chút để tiết kiệm không gian */
-    border-radius: 20px;
-    width: 90%;
-    max-width: 450px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+		/* 1. Sửa lại khung chứa nội dung */
+		.modal-content {
+		background: white;
+		padding: 20px; /* Giảm padding một chút để tiết kiệm không gian */
+		border-radius: 20px;
+		width: 90%;
+		max-width: 450px;
+		box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     
-    /* THÊM 3 DÒNG NÀY */
-    max-height: 75vh;    /* Giới hạn chiều cao tối đa bằng 85% màn hình */
-    display: flex;       /* Chuyển sang dạng flex để sắp xếp các phần bên trong */
-    flex-direction: column; 
-}
+		/* THÊM 3 DÒNG NÀY */
+		max-height: 75vh;    /* Giới hạn chiều cao tối đa bằng 85% màn hình */
+		display: flex;       /* Chuyển sang dạng flex để sắp xếp các phần bên trong */
+		flex-direction: column; 
+		}
 
-.modal-header {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #2c3e50;
-}
+		.modal-header {
+		font-size: 1.5rem;
+		font-weight: bold;
+		margin-bottom: 20px;
+		color: #2c3e50;
+		}
 
-/* 2. Sửa lại phần chứa chữ (phần này sẽ có thanh cuộn) */
-.modal-body {
-    text-align: left;
-    line-height: 1.6;
-    color: #444;
-    margin-bottom: 20px;
+		/* 2. Sửa lại phần chứa chữ (phần này sẽ có thanh cuộn) */
+		.modal-body {
+		text-align: left;
+		line-height: 1.6;
+		color: #444;
+		margin-bottom: 20px;
 
-    /* THÊM 2 DÒNG NÀY */
-    overflow-y: auto;    /* Hiện thanh cuộn dọc khi nội dung quá dài */
-    padding-right: 10px; /* Tạo khoảng trống để thanh cuộn không đè lên chữ */
-}
-/* Tùy chỉnh thanh cuộn cho Popup */
-.modal-body::-webkit-scrollbar {
-    width: 6px;
-}
-.modal-body::-webkit-scrollbar-thumb {
-    background-color: #52cca1; /* Màu xanh của bạn */
-    border-radius: 10px;
-}
+		/* THÊM 2 DÒNG NÀY */
+		overflow-y: auto;    /* Hiện thanh cuộn dọc khi nội dung quá dài */
+		padding-right: 10px; /* Tạo khoảng trống để thanh cuộn không đè lên chữ */
+		}
+		/* Tùy chỉnh thanh cuộn cho Popup */
+		.modal-body::-webkit-scrollbar {
+		width: 6px;
+		}
+		.modal-body::-webkit-scrollbar-thumb {
+		background-color: #52cca1; /* Màu xanh của bạn */
+		border-radius: 10px;
+		}
 
 
 .btn-close {
@@ -199,8 +199,8 @@
     to { opacity: 1; transform: scale(1); }
 }
 
-/* LOGO */
-.brand-logo-container {
+	/* LOGO */
+	.brand-logo-container {
         text-align: center;        /* Căn giữa logo */
         padding: 5px 0;           /* Khoảng cách trên dưới */
         margin: 0 auto;            /* Đảm bảo căn giữa */
@@ -245,6 +245,30 @@
         }
     }
 	
+	/* CSS cho Popup Modal */
+	.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7); z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+	}
+	.modal-content {
+    background: white; width: 90%; max-width: 600px; max-height: 85vh;
+    padding: 25px; border-radius: 12px; position: relative;
+    overflow-y: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: fadeIn 0.3s ease;
+	}
+	.modal-close {
+    position: absolute; top: 10px; right: 15px; font-size: 28px;
+    cursor: pointer; color: #666;
+	}
+	#modal-body-content img {
+    max-width: 100%; height: auto; border-radius: 8px; display: block; margin: 10px auto;
+	}
+	@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+	}
+	
     </style>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -283,8 +307,8 @@
         <p class="brand-subtitle" id="slogan-display">Chăm học Toán - Sáng tương lai</p>
         
         <input type="text" id="hs-name" placeholder="Họ và tên học sinh">
-        <input type="text" id="exam-code" placeholder="Nhập Mã Đề Thi (Chú ý VIẾT HOA)">
-        <button class="btn" onclick="vaoThi(event)">BẮT ĐẦU LÀM BÀI</button>
+        <input type="text" id="exam-code" placeholder="Nhập Mã (Chú ý VIẾT HOA)">
+        <button class="btn" onclick="vaoThi(event)">LET&apos;S GO</button>
 		
 		<button class="btn" style="background-color: #4cd964; color: white;" onclick="xuLyBamNut(event)">
     Hướng dẫn học tập
@@ -352,7 +376,7 @@
 
         <button class="btn btn-outline" onclick="showLoginAdmin()" style="font-size: 0.85em; padding: 8px;">Dành cho Giáo viên</button>
 
-        <div class="footer-credit">Design by QuânPT</div>
+        <div class="footer-credit">Design by #QuanPT</div>
     </div>
 
     <div id="login-admin" class="hidden">
@@ -439,18 +463,24 @@
 // --- CẤU HÌNH SLOGAN NGẪU NHIÊN ---
     // Thầy thay nội dung 5 câu nói ở đây nhé:
     const listSlogans = [
-        "Chăm học Toán - Sáng tương lai",
-        "Cách duy nhất để Học Toán là Làm Toán",
-        "Mỗi ngày học tập là một cơ hội để trở thành phiên bản tốt hơn của chính mình",
-        "Hãy học khi người khác ngủ, lao động khi người khác lười nhác, chuẩn bị khi người khác chơi bời và có được giấc mơ của mình khi mọi người chỉ ao ước.",
-        "Học tập giống như chèo thuyền ngược dòng, không tiến ắt sẽ lùi"
+        "Chăm học Toán - Sáng tương lai <span style=\"color: #1DA1F2; font-weight: bold;\">#QUOTES</span>",
+        "Cách duy nhất để Học Toán là Làm Toán <span style=\"color: #1DA1F2; font-weight: bold;\">#QUOTES</span>",
+        "Mỗi ngày học tập là một cơ hội để trở thành phiên bản tốt hơn của chính mình <span style=\"color: #1DA1F2; font-weight: bold;\">#QUOTES</span>",
+        "Hãy học khi người khác ngủ, lao động khi người khác lười nhác, chuẩn bị khi người khác chơi bời và có được giấc mơ của mình khi mọi người chỉ ao ước <span style=\"color: #1DA1F2; font-weight: bold;\">#QUOTES</span>",
+        "Học tập giống như chèo thuyền ngược dòng, không tiến ắt sẽ lùi <span style=\"color: #1DA1F2; font-weight: bold;\">#QUOTES</span>",
+		"Nếu bạn là học sinh lớp 12, hãy nhập mã <span style=\"color: #1DA1F2; font-weight: bold;\">#TG</span> xem nhé",
+    	"<span style=\"color: #1DA1F2; font-weight: bold;\">#MS</span> giúp bạn bớt căng thẳng và cảm thấy hào hứng hơn khi học đấy!",
+    	"Bạn đã vượt qua câu đố <span style=\"color: #1DA1F2; font-weight: bold;\">#IQ98</span> chưa?",
+		"<span style=\"color: #1DA1F2; font-weight: bold;\">#PMDR</span> là một phương pháp quản lý thời gian phổ biến, giúp bạn duy trì sự tập trung khi tự học.",
+		"Bạn đã gặp gỡ Ảo Thuật Gia với các con số chưa? <span style=\"color: #1DA1F2; font-weight: bold;\">#MAGIC</span>",
+		"Giống như cơ bắp, bộ não cũng cần được tập thể dục. Nếu học Toán là những bài tập chuyên sâu thì <span style=\"color: #1DA1F2; font-weight: bold;\">#SDK</span> là bài tập khởi động nhẹ nhàng thú vị"
     ];
 
     // Tự động chọn 1 câu và hiển thị khi trang web tải xong
     document.addEventListener("DOMContentLoaded", function() {
         const randomSlogan = listSlogans[Math.floor(Math.random() * listSlogans.length)];
         const sloganElement = document.getElementById('slogan-display');
-        if(sloganElement) sloganElement.innerText = randomSlogan;
+        if(sloganElement) sloganElement.innerHTML = randomSlogan;
     });
     // -----------------------------------
 
@@ -465,7 +495,7 @@
     }
 
     // --- THAY LINK API CỦA THẦY VÀO ĐÂY ---
-    const API_URL = "https://script.google.com/macros/s/AKfycbwrijo6SO5gMM5u7Adr24IaUA7_UoDmb5GKHzNWABLZ-tIK1Fr6FyOpEmX_8Xa4h2pc/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbybvwMJ_j4xnOJajxILIS1UjTbCo_vxSMddih_Kpbe7Nx1MYAPK0Y-pb7As318Aije_/exec"; 
     // ---------------------------------------
 
     let currentExamConfig = {};
@@ -483,65 +513,69 @@
     }
 
     async function vaoThi(event) {
-    // 1. LẤY ĐỐI TƯỢNG NÚT VÀ LƯU TRẠNG THÁI CŨ
-    const btn = event.target; 
-    const originalText = btn.innerHTML;
-
-    // --- XỬ LÝ HỌ TÊN THÔNG MINH ---
-    const nameInput = document.getElementById('hs-name');
-    let rawName = nameInput.value;
-    
-    let cleanName = chuanHoaTen(rawName);
-    
-    if (!cleanName || cleanName.split(' ').length < 2) {
-        alert("Vui lòng nhập đầy đủ Họ và Tên (Ví dụ: Nguyễn Văn An)");
-        nameInput.focus();
-        return;
-    }
-
-    nameInput.value = cleanName;
-    studentName = cleanName; 
-
-    const code = document.getElementById('exam-code').value.trim();
-    examCode = code; 
-
-    if (!studentName || !examCode) {
-        alert("Vui lòng nhập đủ Họ Tên và Mã đề!");
-        return;
-    }
-
-    // 2. ĐỔI GIAO DIỆN NÚT THÀNH LOADING
-    btn.disabled = true;
-    // Sử dụng class btn-loader mà bạn đã có sẵn trong CSS
-    btn.innerHTML = '<div class="btn-loader"></div> Đang tải đề...';
-
-    // Bỏ showLoader(true) cũ vì đã có loading tại nút
-    try {
-        const res = await fetch(`${API_URL}?action=get_exam&maDe=${examCode}&t=${Date.now()}`).then(r => r.json());
+        // --- 1. LẤY GIÁ TRỊ TỪ Ô NHẬP LIỆU ---
+        // Thầy kiểm tra đúng ID của ô nhập mã đề và ô nhập tên nhé
+        examCode = document.getElementById('exam-code').value.trim(); 
         
-        if(res.status === 'error') { 
-            alert(res.msg); 
-            return; 
+		// CHUẨN HÓA TÊN
+        const nameInput = document.getElementById('hs-name');
+        let rawName = nameInput.value;
+        let cleanName = chuanHoaTen(rawName);
+        
+        if (!cleanName || cleanName.split(' ').length < 2) {
+            alert("Vui lòng nhập đầy đủ Họ và Tên (Ví dụ: Nguyễn Văn An)");
+            nameInput.focus();
+            return;
         }
         
-        hideAll();
-        document.getElementById('exam-interface').style.display = 'block';
-        document.getElementById('exam-title-display').innerText = res.data.tenDe;
-        
-        currentExamConfig = res.data.config;
-        currentExamQuestions = res.data.cauHoi;
-        renderQuestions(res.data.cauHoi, res.data.config);
+        nameInput.value = cleanName;
+        studentName = cleanName;
 
-    } catch(e) { 
-        console.error(e); 
-        alert("Lỗi kết nối hoặc không tìm thấy đề!"); 
-    } finally {
-        // 3. TRẢ LẠI TRẠNG THÁI NÚT BAN ĐẦU
-        // Lệnh trong finally luôn chạy kể cả khi fetch thành công hay thất bại
-        btn.disabled = false;
-        btn.innerHTML = originalText;
+        if (!examCode || !studentName) {
+            alert("Vui lòng nhập đầy đủ Họ tên và Mã đề!");
+            return;
+        }
+
+        const btn = event.target; 
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = "Đang tải...";
+
+        try {
+            // --- 2. MÃ HÓA MÃ ĐỀ ĐỂ XỬ LÝ DẤU # ---
+            // Sử dụng encodeURIComponent để biến # thành %23 khi gửi đi
+            const safeCode = encodeURIComponent(examCode);
+            const res = await fetch(`${API_URL}?action=get_exam&maDe=${safeCode}&t=${Date.now()}`).then(r => r.json());
+            
+            if(res.status === 'error') { 
+                alert(res.msg); 
+                return; 
+            }
+            
+            // Trường hợp mã đặc biệt
+            if (res.status === 'special') {
+                document.getElementById('modal-body-content').innerHTML = res.html;
+                document.getElementById('special-modal').style.display = 'flex';
+                return;
+            }
+            
+            // Trường hợp vào thi bình thường
+            hideAll();
+            document.getElementById('exam-interface').style.display = 'block';
+            document.getElementById('exam-title-display').innerText = res.data.tenDe;
+            
+            currentExamConfig = res.data.config;
+            currentExamQuestions = res.data.cauHoi;
+            renderQuestions(res.data.cauHoi, res.data.config);
+
+        } catch(e) { 
+            console.error(e); 
+            alert("Lỗi kết nối hoặc không tìm thấy đề!"); 
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
     }
-}
 
     function renderQuestions(list, config) {
         let html = '';
@@ -1076,10 +1110,10 @@
         window.scrollTo(0, 0);
     }
 
-    function chamDiemTaiCho() {
+	    function chamDiemTaiCho() {
         const btn = document.getElementById('btn-check-again');
         
-        // --- LOGIC GIỚI HẠN SỐ LẦN (Yêu cầu 2) ---
+        // --- LOGIC GIỚI HẠN SỐ LẦN ---
         soLanDaThu++;
         let conLai = MAX_LAN_THU - soLanDaThu;
 
@@ -1088,40 +1122,65 @@
         
         const questionDivs = document.querySelectorAll('.question-box');
 
-        // Logic chấm điểm (giữ nguyên logic cũ)
+        // Logic chấm điểm
         window.ketQuaChiTiet.forEach((dataCau, i) => {
             const div = questionDivs[i];
             if (div.style.display === 'none') return; 
 
             totalSai++;
             let isCorrectNow = false;
-            let dapAnDung = dataCau.dapAn;
             let userVal;
             
-            // Dạng 1: Trắc nghiệm
-            if (typeof dapAnDung === 'string' && dapAnDung.length === 1) {
+            // ---------------------------------------------------------
+            // BƯỚC KHẮC PHỤC CHÚA TỂ: XỬ LÝ SỰ SAI LỆCH CẤU TRÚC JSON
+            // ---------------------------------------------------------
+            let dapAnDungRaw = dataCau.dapAn; 
+            let dapAnDung;
+            
+            // Nếu backend trả về nguyên một Object (vd: {id: 1, dang: 1, dapAn: "A"})
+            if (dapAnDungRaw !== null && typeof dapAnDungRaw === 'object' && !Array.isArray(dapAnDungRaw) && dapAnDungRaw.hasOwnProperty('dapAn')) {
+                dapAnDung = dapAnDungRaw.dapAn; // Bóc lấy chữ "A" ở bên trong
+            } else {
+                dapAnDung = dapAnDungRaw; // Nếu là định dạng V1 cũ thì giữ nguyên
+            }
+            // ---------------------------------------------------------
+
+            // Lấy dạng câu hỏi từ Cấu hình đề
+            let dangCauHoi = currentExamQuestions[i].dang;
+
+            // Dạng 1: Trắc nghiệm (4 đáp án A, B, C, D)
+            if (dangCauHoi === 1) {
                 const el = document.querySelector(`input[name="c${i}"]:checked`);
                 userVal = el ? el.value : "";
-                if (userVal === dapAnDung) isCorrectNow = true;
+                if (dapAnDung && userVal === dapAnDung.toString().trim().toUpperCase()) {
+                    isCorrectNow = true;
+                }
             }
-            // Dạng 2: Đúng Sai
-            else if (Array.isArray(dapAnDung)) {
-                let checkArr = [];
+            // Dạng 2: Đúng/Sai
+            else if (dangCauHoi === 2) {
+                let checkArr =[];
                 for(let j=0; j<4; j++) {
                     const el = document.querySelector(`input[name="c${i}_${j}"]:checked`);
                     let val = el ? (el.value === 'true') : null;
-                    checkArr.push(val === dapAnDung[j]);
+                    if (Array.isArray(dapAnDung)) {
+                        checkArr.push(val === dapAnDung[j]);
+                    } else {
+                        checkArr.push(false); 
+                    }
                 }
                 if (!checkArr.includes(false)) isCorrectNow = true;
             }
-            // Dạng 3: Điền số
-            else {
+            // Dạng 3: Điền số/Trả lời ngắn
+            else if (dangCauHoi === 3) {
                 let el = document.getElementById(`c${i}`);
-                userVal = parseFloat(el.value.replace(',', '.'));
-                let valDung = parseFloat(dapAnDung);
-                if (!isNaN(userVal) && Math.abs(userVal - valDung) < 0.0001) isCorrectNow = true;
+                if (el) { 
+                    userVal = parseFloat(el.value.replace(',', '.'));
+                    let valDung = parseFloat(dapAnDung);
+                    if (!isNaN(userVal) && Math.abs(userVal - valDung) < 0.0001) isCorrectNow = true;
+                }
             }
 
+            // Đổi màu viền tùy theo đúng/sai
             if (isCorrectNow) {
                 div.style.border = "2px solid green";
                 div.style.backgroundColor = "#f0fff4";
@@ -1134,26 +1193,17 @@
 
         // --- XỬ LÝ KẾT QUẢ SAU KHI CHẤM ---
         if (countDung === totalSai) {
-            // Trường hợp 1: Sửa đúng hết
             btn.innerHTML = "🎉 HOÀN THÀNH XUẤT SẮC!";
             btn.style.background = "#28a745";
             btn.disabled = true;
             alert("TUYỆT VỜI! Em đã hiểu bài hơn rồi đấy.");
-            
-            //setTimeout(() => {
-            //    if(confirm("Hãy cố gắng và cẩn thận hơn ở những bài sau nhé!")) location.reload();
-            //}, 1000);
-
         } else {
-            // Trường hợp 2: Vẫn còn sai
             if (conLai > 0) {
-                // Vẫn còn lượt
                 btn.innerHTML = `KIỂM TRA LẠI (Còn ${conLai} lượt)`;
                 alert(`Em đã sửa đúng ${countDung}/${totalSai} câu.\nVẫn còn câu sai (viền đỏ), hãy cố gắng suy nghĩ thêm nhé!`);
             } else {
-                // Hết lượt
                 btn.innerHTML = "ĐÃ HẾT LƯỢT KIỂM TRA";
-                btn.style.background = "#7f8c8d"; // Màu xám
+                btn.style.background = "#7f8c8d";
                 btn.disabled = true;
                 alert("Rất tiếc, em đã hết lượt kiểm tra lại.\nHãy xem lại sách vở hoặc hỏi thầy cô để được giải đáp nhé!");
             }
@@ -1194,8 +1244,21 @@ function dongModal(id) {
     document.getElementById(id).style.display = 'none';
 }
 
+function closeModal() {
+    document.getElementById('special-modal').style.display = 'none';
+    // Có thể reload trang để học sinh nhập mã khác
+    // location.reload(); 
+}
 
 </script>
+
+<div id="special-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div id="modal-body-content">
+            </div>
+    </div>
+</div>
 
 </body>
 </html>
