@@ -673,7 +673,12 @@
 			// --- ĐOẠN CODE MỚI THÊM: XỬ LÝ NÚT SỬA SAI ---
             window.ketQuaChiTiet = res.chiTiet; // Lưu kết quả lại để dùng
             // Nếu điểm < 10 (tức là có câu sai) thì hiện nút Sửa sai
-            if (res.diem < (currentExamConfig.p1_num * currentExamConfig.p1_score + currentExamConfig.p2_num * 1 + currentExamConfig.p3_num * currentExamConfig.p3_score)) { 
+            const diemToiDaFE = currentExamConfig.p1_num * currentExamConfig.p1_score 
+                              + currentExamConfig.p2_num * 1 
+                              + currentExamConfig.p3_num * currentExamConfig.p3_score;
+            const nguongDiemMax = diemToiDaFE > 10 ? 10 : diemToiDaFE;
+            
+            if (res.diem < nguongDiemMax) { 
                  document.getElementById('btn-fix-mistakes').style.display = 'block';
             } else {
                  document.getElementById('btn-fix-mistakes').style.display = 'none';
