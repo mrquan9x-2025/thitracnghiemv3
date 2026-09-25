@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<!-- CHÀO NGƯỜI TÒ MÒ! Bạn đang tìm gì ở đây vậy? -->
-<!-- Nếu bạn thấy mã nguồn này thú vị hoặc có ý tưởng nào để nâng tầm trải nghiệm học tập tại đây, hãy liên hệ với tôi! -->
-<!-- Nếu bạn đang định tìm đáp án bài tập hoặc những bí mật ẩn giấu trong này... thì lời khuyên là hãy quay lại giao diện chính và khám phá chúng theo cách bình thường nhé. Tự mình vượt qua thử thách và tìm ra những điều thú vị khi học sẽ mang lại cảm giác "đã" hơn nhiều so với việc đọc code đấy! -->
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HỌC TOÁN THẦY QUÂN</title>
+    <title>HỌC TOÁN THẦY QUÂN 922</title>
 	<link rel="icon" type="image/png" href="https://files.catbox.moe/wdp297.png">
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
@@ -303,7 +300,7 @@
 <div id="main-screen">
 <!-- LOGO -->
 <div class="brand-logo-container">
-    <img src="https://files.catbox.moe/lre3wu.jpg" 
+    <img src="https://i.postimg.cc/RVDS2S58/TTQ4.jpg" 
     alt="Toán Thầy Quân" 
     class="brand-logo">
 </div>
@@ -391,7 +388,7 @@
     </div>
 
     <div id="admin-panel" class="hidden">
-        <a href="https://docs.google.com/spreadsheets/u/0/?tgif=c" style="text-decoration: none;">
+        <a href="https://mrquan9x-2025.github.io/quanlythiv3/" style="text-decoration: none;">
             <button class="btn btn-outline" style="margin-bottom: 20px; border-color: #28a745; color: #28a745; font-weight: bold;">
                 📊 THỐNG KÊ KẾT QUẢ THI
             </button>
@@ -470,7 +467,6 @@
         "Chăm học Toán - Sáng tương lai <span style=\"color: #1DA1F2; font-weight: bold;\">#QUOTES</span>",
         "Cách duy nhất để Học Toán là Làm Toán <span style=\"color: #1DA1F2; font-weight: bold;\">#QUOTES</span>",
         "Mỗi ngày học tập là một cơ hội để trở thành phiên bản tốt hơn của chính mình <span style=\"color: #1DA1F2; font-weight: bold;\">#QUOTES</span>",
-		"Thay vì nhập mã đề, hãy nhập mã Hashtag để khám phá những điều thú vị. Thử <span style=\"color: #1DA1F2; font-weight: bold;\">#PI</span> xem nhé",
         "Hãy học khi người khác ngủ, lao động khi người khác lười nhác, chuẩn bị khi người khác chơi bời và có được giấc mơ của mình khi mọi người chỉ ao ước <span style=\"color: #1DA1F2; font-weight: bold;\">#QUOTES</span>",
         "Học tập giống như chèo thuyền ngược dòng, không tiến ắt sẽ lùi <span style=\"color: #1DA1F2; font-weight: bold;\">#QUOTES</span>",
 		"Nếu bạn là học sinh lớp 12, hãy nhập mã <span style=\"color: #1DA1F2; font-weight: bold;\">#TG</span> xem nhé",
@@ -499,7 +495,7 @@
         });
     }
 
-    // --- THAY LINK API CỦA THẦY VÀO ĐÂY ---
+    // --- LINK API ---
     const API_URL = "https://script.google.com/macros/s/AKfycbwrijo6SO5gMM5u7Adr24IaUA7_UoDmb5GKHzNWABLZ-tIK1Fr6FyOpEmX_8Xa4h2pc/exec"; 
     // ---------------------------------------
 
@@ -507,9 +503,103 @@
     let currentExamQuestions = [];
     let studentName = "";
     let examCode = "";
+	// Mã duy nhất cho một lượt nộp bài
+	let currentSubmissionId = null;
 
     function showLoader(show) { document.getElementById('loader').style.display = show ? 'block' : 'none'; }
-    function hideAll() {
+    
+	// Chờ một khoảng thời gian
+	function delay(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+
+	// Tạo mã duy nhất cho một lượt nộp bài
+	function createSubmissionId() {
+
+		// Trình duyệt hiện đại
+		if (
+			window.crypto &&
+			typeof crypto.randomUUID === 'function'
+		) {
+			return crypto.randomUUID();
+		}
+
+		// Dự phòng cho trình duyệt cũ
+		return (
+			Date.now().toString(36) +
+			"-" +
+			Math.random().toString(36).substring(2) +
+			"-" +
+			Math.random().toString(36).substring(2)
+		);
+	}
+
+
+	// Gửi bài lên Apps Script MỘT LẦN
+	async function guiBaiMotLan(baiLam) {
+
+		const formData = new FormData();
+
+		formData.append('action', 'submit_exam');
+		formData.append('maDe', examCode);
+		formData.append('tenHS', studentName);
+		formData.append(
+			'baiLam',
+			JSON.stringify(baiLam)
+		);
+
+		// Quan trọng: gửi cùng SubmissionID
+		formData.append(
+			'submissionId',
+			currentSubmissionId
+		);
+
+
+		const response = await fetch(API_URL, {
+			method: 'POST',
+			body: formData
+		});
+
+
+		// Đọc dạng text trước để dễ phát hiện lỗi JSON
+		const rawText = await response.text();
+
+
+		if (!response.ok) {
+
+			throw new Error(
+				"HTTP " +
+				response.status +
+				": " +
+				rawText.substring(0, 200)
+			);
+		}
+
+
+		let data;
+
+		try {
+
+			data = JSON.parse(rawText);
+
+		} catch (jsonError) {
+
+			console.error(
+				"Server trả về dữ liệu không phải JSON:",
+				rawText
+			);
+
+			throw new Error(
+				"Phản hồi từ máy chủ không phải JSON hợp lệ."
+			);
+		}
+
+
+		return data;
+	}
+	
+	function hideAll() {
         document.getElementById('main-screen').style.display = 'none';
         document.getElementById('login-admin').style.display = 'none';
         document.getElementById('admin-panel').style.display = 'none';
@@ -569,9 +659,16 @@
             document.getElementById('exam-interface').style.display = 'block';
             document.getElementById('exam-title-display').innerText = res.data.tenDe;
             
-            currentExamConfig = res.data.config;
-            currentExamQuestions = res.data.cauHoi;
-            renderQuestions(res.data.cauHoi, res.data.config);
+            // Mỗi lần vào một đề mới -> bắt đầu một lượt thi mới
+			currentSubmissionId = null;
+
+			currentExamConfig = res.data.config;
+			currentExamQuestions = res.data.cauHoi;
+
+			renderQuestions(
+				res.data.cauHoi,
+				res.data.config
+			);
 
         } catch(e) { 
             console.error(e); 
@@ -651,17 +748,57 @@
                 baiLam.push(val);
             }
         });
-        // 3. Gửi dữ liệu đi
-        showLoader(true);
-        const formData = new FormData();
-        formData.append('action', 'submit_exam');
-        formData.append('maDe', examCode);
-        formData.append('tenHS', studentName);
-        formData.append('baiLam', JSON.stringify(baiLam));
+        
+		// 3. GỬI DỮ LIỆU
+		showLoader(true);
 
-        try {
-            const res = await fetch(API_URL, { method: 'POST', body: formData }).then(r => r.json());
-            showLoader(false);
+		// Chỉ tạo SubmissionID ở lần nộp đầu tiên
+		// Nếu retry hoặc học sinh bấm lại, KHÔNG tạo ID mới
+		if (!currentSubmissionId) {
+			currentSubmissionId = createSubmissionId();
+		}
+
+
+		let res;
+
+		try {
+
+			try {
+
+				// ===== LẦN GỬI THỨ NHẤT =====
+				res = await guiBaiMotLan(baiLam);
+
+			} catch (firstError) {
+
+				console.warn(
+					"Lần gửi thứ nhất không nhận được phản hồi:",
+					firstError
+				);
+
+
+				// Thông báo ngay trên nút
+				btnSubmit.innerHTML =
+					'<div class="btn-loader"></div> ' +
+					'Chưa nhận được phản hồi - đang thử lại...';
+
+
+				// Chờ đúng 3 giây
+				await delay(1000);
+
+
+				btnSubmit.innerHTML =
+					'<div class="btn-loader"></div> ' +
+					'Đang thử lại...';
+
+
+				// ===== LẦN GỬI THỨ HAI =====
+				// Vẫn dùng currentSubmissionId CŨ
+				res = await guiBaiMotLan(baiLam);
+			}
+
+
+			showLoader(false);
+		
             // Nếu lỗi thì mở lại nút để nộp lại
             if(res.status === 'error') { 
                 alert(res.msg); 
@@ -670,19 +807,14 @@
                 return; 
             }
 
-// ... (Phần trên giữ nguyên) ...
+			// ... (Phần trên giữ nguyên) ...
             
             hideAll();
             document.getElementById('result-interface').style.display = 'block';
 			// --- ĐOẠN CODE MỚI THÊM: XỬ LÝ NÚT SỬA SAI ---
             window.ketQuaChiTiet = res.chiTiet; // Lưu kết quả lại để dùng
             // Nếu điểm < 10 (tức là có câu sai) thì hiện nút Sửa sai
-            const diemToiDaFE = currentExamConfig.p1_num * currentExamConfig.p1_score 
-                              + currentExamConfig.p2_num * 1 
-                              + currentExamConfig.p3_num * currentExamConfig.p3_score;
-            const nguongDiemMax = diemToiDaFE > 10 ? 10 : diemToiDaFE;
-            
-            if (res.diem < nguongDiemMax) { 
+            if (res.diem < (currentExamConfig.p1_num * currentExamConfig.p1_score + currentExamConfig.p2_num * 1 + currentExamConfig.p3_num * currentExamConfig.p3_score)) { 
                  document.getElementById('btn-fix-mistakes').style.display = 'block';
             } else {
                  document.getElementById('btn-fix-mistakes').style.display = 'none';
@@ -759,11 +891,7 @@
                    "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyZ2diOW9rOGtyODFlaXdueDI0N2E5dnU1YzkzczJjcGdydnViNGoxcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jJ2zMk9eXoht2VFxEV/giphy.gif",
                    "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyOTdsZXF1c291eW1qczF6OW9nbGxteXEzbXExejcyNnJjN3plZzFkeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FemTGpEZeK27M5fKL4/giphy.gif",
                    "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyMThpZjIydHprZTAwZ3J2NXJ3YWZ3MGdka3ZuMDdmemlqNTkzOTdkayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUn3C8WqEzUEeQoRa0/giphy.gif",
-				   	"https://i.postimg.cc/c449Rjv0/IQ2.png",
-					"https://i.postimg.cc/NfHyzG9n/Music.png",
-					"https://i.postimg.cc/kgPV3rWD/Music2.png",
-					"https://i.postimg.cc/8zgFQ8Lc/Tien-Tri23.png",
-					"https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycDdtZnN6eDI4bWpyanU5MjIxNWh2enNwaXdzaHAzZG1iaW9qa2d4NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2uh5yKKmZjDFUy2DOM/giphy.gif"
+                   "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycDdtZnN6eDI4bWpyanU5MjIxNWh2enNwaXdzaHAzZG1iaW9qa2d4NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2uh5yKKmZjDFUy2DOM/giphy.gif"
                 ],
                 lv4: [ // 7-8 điểm: rất tốt, success!
                    "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXE3cWF6Mm91dTRnaHRwa3RlZ2Jwa3czcms1YTdsYjBxOWpvc3M2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tIeCLkB8geYtW/giphy.gif",  // Cuu like
@@ -777,12 +905,7 @@
                    "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUybzV1MHB2Nm5uY2c5bXExc3N6MWZiaGRzb28weXo1a3F0eHoya2NweCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YJ09hqJCLme4g/giphy.gif",
                    "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUycHhtZjdzbWFzZDB2NXZ4MXY3azhycHdoZmkzeGhmNnRxempmOGI3dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wvrn7MMemcOB2/giphy.gif",
                    "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2c3ZWVmNzY3amFmenJrNGg4NGoycTkwcHUzb3A0dmxjZGxhbnEzMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PhR99fbNjhAAzopGnm/giphy.gif",
-				   	"https://i.postimg.cc/c449Rjv0/IQ2.png",
-					"https://i.postimg.cc/BQQYTyjs/IQ3.png",
-					"https://i.postimg.cc/NfHyzG9n/Music.png",
-					"https://i.postimg.cc/kgPV3rWD/Music2.png",
-					"https://i.postimg.cc/8zgFQ8Lc/Tien-Tri23.png",
-	                "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXV0c3VwendhMmJ5ajZpcDV0MHY5ZWUyYW5qMHM0a3V3N2w4cm1rMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tnMUXTkYUWKe1dasNJ/giphy.gif"
+                   "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXV0c3VwendhMmJ5ajZpcDV0MHY5ZWUyYW5qMHM0a3V3N2w4cm1rMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tnMUXTkYUWKe1dasNJ/giphy.gif"
                 ],
                 lv5: [ // 8-9 điểm: giỏi lắm, smart!
                    "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycG85c3ZveDQxbHhqeHNicTBkaXI1aGV1azY4Y3lmemppZ2V4YmZ2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gnNxCUUzGiKuYnLxJN/giphy.gif",
@@ -803,13 +926,6 @@
 				   "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXE3cWF6Mm91dTRnaHRwa3RlZ2Jwa3czcms1YTdsYjBxOWpvc3M2eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tIeCLkB8geYtW/giphy.gif",
 				   "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyZzA3eW4zam9nMDNnOHo2cDNxOWtwcno5MXlhemZjanljNDZjd2dlcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hflpSaYuR8xK8/giphy.gif",
                    "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyMnk4NnAwc2JnZGNkd3F4NmV0eDIyYTYwZWY4eXdzb3NwMzVtMnl5aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xUjSOWCndCdECCyOEY/giphy.gif",
-				   	"https://i.postimg.cc/c449Rjv0/IQ2.png",
-					"https://i.postimg.cc/BQQYTyjs/IQ3.png",
-					"https://i.postimg.cc/rFFn1bDq/IQ31.png",
-					"https://i.postimg.cc/NfHyzG9n/Music.png",
-					"https://i.postimg.cc/kgPV3rWD/Music2.png",
-					"https://i.postimg.cc/8zgFQ8Lc/Tien-Tri23.png",
-					"https://i.postimg.cc/LsSPvsdk/Gift-Box3.png",
                    "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnE2c2x5OGpoam5wMHMzbGh0bHNuZTY1eHc2ajVqZTIzOXhsNnEzeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qAmdxxyQ4XTt3KGt3c/giphy.gif"
                 ],
                 lv6: [ // Trên 9 điểm: đỉnh chóp, epic win!
@@ -829,14 +945,6 @@
                    "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUybnc5NWwxYTNzc2Y4bnNrbm8xanp4MDdwZm1sY3BnMDB2NmF5NTc5ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BWD3CtcudWL28/giphy.gif",
                    "https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUydDFpMm1oanluNjJmcm1pb2pydzg2OWRvYzh2NnZ6ZXdsaTF4anFvNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t3sZxY5zS5B0z5zMIz/giphy.gif",
                    "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzVvOHVoc3FocHlrcGppdTJpcGxpZ3Q3ZjFkdm5ycXU5Y2dpdDI2MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KhdCldraGlzwqTc4Vb/giphy.gif",
-				   "https://i.postimg.cc/tCCS3fsb/IQ1.png",
-					"https://i.postimg.cc/c449Rjv0/IQ2.png",
-					"https://i.postimg.cc/BQQYTyjs/IQ3.png",
-					"https://i.postimg.cc/rFFn1bDq/IQ31.png",
-					"https://i.postimg.cc/NfHyzG9n/Music.png",
-					"https://i.postimg.cc/kgPV3rWD/Music2.png",
-					"https://i.postimg.cc/8zgFQ8Lc/Tien-Tri23.png",
-					"https://i.postimg.cc/LsSPvsdk/Gift-Box3.png",
                    "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpzNXp2ZjIxZzliOWNrOXpkdHR2NzZoNHZwOGQ0Y3I5eG13OXBrcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/r1d69SdEpcxmhzlHd1/giphy.gif"
                 ]
             };
@@ -949,7 +1057,8 @@
 			window.scrollTo(0, 0);
 
         } catch(e) { 
-            alert("Lỗi nộp bài! Vui lòng kiểm tra mạng."); 
+            showLoader(false);
+			alert("Lỗi nộp bài! Kiểm tra mạng và ấn nộp lại nhé."); 
             console.error(e);
             // Mở lại nút nếu lỗi mạng
             btnSubmit.disabled = false;
@@ -1032,19 +1141,65 @@
     btn.disabled = true;
     btn.innerHTML = '<div class="btn-loader"></div> Đang lưu...';
 
-    try {
-        const response = await fetch(API_URL, { method: 'POST', body: formData });
-        const result = await response.json(); // Giả sử API trả về JSON
+    
+	try {
 
-        if(result.status === 'success' || response.ok) {
-            alert("Lưu thành công! Bạn có thể tắt trang hoặc tạo đề khác.!");
-        } else {
-            alert("Có lỗi xảy ra: " + (result.msg || "Không xác định"));
-        }
-    } catch(e) {
-        console.error(e);
-        alert("Lỗi kết nối mạng hoặc máy chủ!");
-    } finally {
+		const response = await fetch(API_URL, {
+			method: 'POST',
+			body: formData
+		});
+
+
+		const rawText = await response.text();
+
+		let result;
+
+		try {
+
+			result = JSON.parse(rawText);
+
+		} catch (jsonError) {
+
+			console.error(
+				"Phản hồi lưu đề không phải JSON:",
+				rawText
+			);
+
+			throw new Error(
+				"Máy chủ trả về dữ liệu không hợp lệ."
+			);
+		}
+
+
+		// Chỉ báo thành công khi BACKEND thật sự trả status = ok
+		if (result.status === 'ok') {
+
+			alert(
+				result.msg ||
+				"Lưu đề thi thành công! Có thể đóng trang hoặc tạo đề khác."
+			);
+
+		} else {
+
+			alert(
+				"Có lỗi xảy ra: " +
+				(result.msg || "Không xác định")
+			);
+		}
+
+	} catch(e) {
+
+		console.error(
+			"Lỗi lưu đề:",
+			e
+		);
+
+		alert(
+			"Lỗi kết nối mạng hoặc máy chủ!"
+		);
+	}
+	
+	finally {
         // 4. TRẢ LẠI NÚT TRẠNG THÁI BAN ĐẦU (Dù thành công hay thất bại)
         btn.disabled = false;
         btn.innerHTML = originalText;
