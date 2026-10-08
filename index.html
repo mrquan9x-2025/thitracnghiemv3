@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HỌC TOÁN THẦY QUÂN</title>
+    <title>HỌC TOÁN THẦY QUÂN 922</title>
 	<link rel="icon" type="image/png" href="https://files.catbox.moe/wdp297.png">
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
@@ -477,12 +477,45 @@
 		"Giống như cơ bắp, bộ não cũng cần được tập thể dục. Nếu học Toán là những bài tập chuyên sâu thì <span style=\"color: #1DA1F2; font-weight: bold;\">#SDK</span> là bài tập khởi động nhẹ nhàng thú vị"
     ];
 
-    // Tự động chọn 1 câu và hiển thị khi trang web tải xong
-    document.addEventListener("DOMContentLoaded", function() {
-        const randomSlogan = listSlogans[Math.floor(Math.random() * listSlogans.length)];
-        const sloganElement = document.getElementById('slogan-display');
-        if(sloganElement) sloganElement.innerHTML = randomSlogan;
-    });
+    // Khi trang web tải xong
+	document.addEventListener("DOMContentLoaded", function() {
+
+		// 1. Hiển thị slogan ngẫu nhiên
+		const randomSlogan =
+			listSlogans[Math.floor(Math.random() * listSlogans.length)];
+
+		const sloganElement =
+			document.getElementById('slogan-display');
+
+		if (sloganElement) {
+			sloganElement.innerHTML = randomSlogan;
+		}
+
+
+		// 2. Tự động điền họ tên đã lưu trên thiết bị
+		const savedName =
+			localStorage.getItem("studentName");
+
+		if (savedName) {
+
+			const nameInput =
+				document.getElementById("hs-name");
+
+			if (nameInput) {
+				nameInput.value = savedName;
+			}
+
+
+			// Nếu đã nhớ tên thì đưa con trỏ xuống ô nhập mã đề
+			const examInput =
+				document.getElementById("exam-code");
+
+			if (examInput) {
+				examInput.focus();
+			}
+		}
+
+	});
     // -----------------------------------
 
     // --- HÀM CHUẨN HÓA HỌ TÊN TIẾNG VIỆT ---
@@ -624,9 +657,17 @@
         }
         
         nameInput.value = cleanName;
-        studentName = cleanName;
+		studentName = cleanName;
 
-        if (!examCode || !studentName) {
+
+		// TỰ ĐỘNG LƯU HỌ TÊN TRÊN THIẾT BỊ NÀY
+		localStorage.setItem(
+			"studentName",
+			cleanName
+		);
+
+
+		if (!examCode || !studentName) {
             alert("Vui lòng nhập đầy đủ Họ tên và Mã đề!");
             return;
         }
