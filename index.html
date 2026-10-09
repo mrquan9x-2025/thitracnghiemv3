@@ -446,9 +446,39 @@
 
     <div id="exam-interface" class="hidden">
         <h2 id="exam-title-display"></h2>
-        <div id="questions-container"></div>
-        <button class="btn" onclick="nopBai()">NỘP BÀI</button>
-    </div>
+        
+		<div id="questions-container"></div>
+
+		<!-- GIF HIỆN KHI ĐANG CHẤM BÀI -->
+	<div style="position:relative;">
+
+		<div id="grading-gif"
+			 style="
+				display:none;
+				position:absolute;
+				left:50%;
+				bottom:70px;
+				transform:translateX(-50%);
+				z-index:10;
+				text-align:center;
+				pointer-events:none;
+			 ">
+
+			<img src="https://cdn.pixabay.com/animation/2026/07/25/06/54/06-54-15-793_512.gif"
+				 alt=""
+				 style="
+					width:140px;
+					max-width:45vw;
+					height:auto;
+					border-radius:10px;
+					display:block;
+				">
+		</div>
+
+		<button class="btn" onclick="nopBai()">NỘP BÀI</button>
+
+		</div>
+	</div>
 
     <div id="result-interface" class="hidden">
         <h2>KẾT QUẢ: <span id="score-display" style="color:red; font-size: 2em"></span></h2>
@@ -770,6 +800,8 @@
         // Đổi giao diện nút -> Đang loading
         btnSubmit.disabled = true;
         btnSubmit.innerHTML = '<div class="btn-loader"></div> Đang chấm điểm...';
+		// Hiện GIF khi bắt đầu chấm
+		document.getElementById('grading-gif').style.display = 'block';
 
 	// 2. Thu thập dữ liệu bài làm (Giữ nguyên logic cũ)
         let baiLam = [];
@@ -842,7 +874,8 @@
 		
             // Nếu lỗi thì mở lại nút để nộp lại
             if(res.status === 'error') { 
-                alert(res.msg); 
+                document.getElementById('grading-gif').style.display = 'none';
+				alert(res.msg); 
                 btnSubmit.disabled = false;
                 btnSubmit.innerHTML = originalText;
                 return; 
@@ -850,6 +883,8 @@
 
 			// ... (Phần trên giữ nguyên) ...
             
+			// Đã nhận được kết quả -> ẩn GIF
+			document.getElementById('grading-gif').style.display = 'none';
             hideAll();
             document.getElementById('result-interface').style.display = 'block';
 			// --- ĐOẠN CODE MỚI THÊM: XỬ LÝ NÚT SỬA SAI ---
@@ -1099,6 +1134,8 @@
 
         } catch(e) { 
             showLoader(false);
+			// Ẩn GIF
+			document.getElementById('grading-gif').style.display = 'none';
 			alert("Lỗi nộp bài! Kiểm tra mạng và ấn nộp lại nhé."); 
             console.error(e);
             // Mở lại nút nếu lỗi mạng
